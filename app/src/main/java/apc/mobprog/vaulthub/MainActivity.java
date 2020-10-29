@@ -40,12 +40,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void requestPermissions(){
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-        ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.USE_BIOMETRIC}, 101 );
     }
     private boolean checkPermissions(){
         int storage = ContextCompat.checkSelfPermission( this, Manifest.permission_group.STORAGE );
         int fingerprint = ContextCompat.checkSelfPermission( this, Manifest.permission.USE_BIOMETRIC );
-        if((storage == PackageManager.PERMISSION_GRANTED) && (fingerprint == PackageManager.PERMISSION_GRANTED)){
+        if(storage == PackageManager.PERMISSION_GRANTED ){
             return true;
         }
         else{
