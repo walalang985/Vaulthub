@@ -27,6 +27,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
                 Cursor cursor = db.fetch(spinner.getSelectedItem().toString());
+                //clear muna ung edittext bago ilagay ung info
                 cursor.moveToFirst();
                 username.setText( "" );
                 password.setText( "" );

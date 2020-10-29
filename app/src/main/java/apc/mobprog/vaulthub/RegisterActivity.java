@@ -27,8 +27,12 @@ public class RegisterActivity extends AppCompatActivity {
         register.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.insertUserLogin( aes128.encrypt( user.getText().toString() ), aes128.encrypt( pass.getText().toString() ) );
-                startActivity( new Intent(getApplicationContext(), LoginFormActivity.class) );
+                if(db.getUserLoginCount() == 0) {
+                    db.insertUserLogin( aes128.encrypt( user.getText().toString() ), aes128.encrypt( pass.getText().toString() ) );
+                    startActivity( new Intent( getApplicationContext(), LoginFormActivity.class ) );
+                }else{
+                    Toast.makeText( getApplicationContext(), "Sorry one account per device", Toast.LENGTH_SHORT ).show();
+                }
             }
         } );
         user.addTextChangedListener( new TextWatcher() {

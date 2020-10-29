@@ -64,17 +64,15 @@ public class LoginFormActivity extends AppCompatActivity {
         login.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(db.getUserLoginCount() == 0){
-                    Cursor cursor = db.fetch( aes128.encrypt( user.getText().toString() ) );
-                    if(cursor.getString( 1 ) == aes128.encrypt( user.getText().toString() ) && cursor.getString( 2 ) == aes128.encrypt( pass.getText().toString() )){
-                        startActivity( new Intent(getApplicationContext(), MainDisplay.class) );
-                    }else{
-                        Toast.makeText( getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT ).show();
-                    }
+
+                Cursor cursor = db.fetch( aes128.encrypt( user.getText().toString() ) );
+                if(cursor.getString( 1 ).equals(aes128.encrypt( user.getText().toString() ))  && cursor.getString( 2 ).equals( aes128.encrypt( pass.getText().toString() ) )){
+                    startActivity( new Intent(getApplicationContext(), MainDisplay.class) );
+                }else{
+                    Toast.makeText( getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT ).show();
                 }
-                else {
-                    Toast.makeText( getApplicationContext(), "Sorry only one account per device", Toast.LENGTH_SHORT ).show();
-                }
+
+
             }
         } );
     }
