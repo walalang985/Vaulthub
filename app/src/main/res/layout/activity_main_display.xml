@@ -13,7 +13,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="20dp"
         android:text="@string/add_account"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/updateBtn"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -42,7 +42,7 @@
         tools:ignore="HardcodedText" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/updateBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

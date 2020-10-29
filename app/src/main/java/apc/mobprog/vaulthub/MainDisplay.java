@@ -22,7 +22,7 @@ public class MainDisplay extends AppCompatActivity{
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main_display );
         final Spinner spinner = findViewById( R.id.spinner2 );
-        Button add = findViewById( R.id.addAcc ), remove = findViewById( R.id.delete );
+        Button add = findViewById( R.id.addAcc ), remove = findViewById( R.id.delete ), update = findViewById( R.id.updateBtn );
         final Button showhide = findViewById( R.id.setPassVisibility );//init seperately since it is used by itself to change its own text
         final TextView user = findViewById( R.id.un ),use = findViewById( R.id.us ), pass = findViewById( R.id.pw );
         userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );//instantiate userInfoStoreHandling to interact with the created database
@@ -39,6 +39,12 @@ public class MainDisplay extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 startActivity( new Intent(getApplicationContext(), DeleteAccountActivity.class) );
+            }
+        } );
+        update.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity( new Intent(getApplicationContext(), UpdateAccountActivity.class) );
             }
         } );
         //changes the visibility of the password and the text inside the button
