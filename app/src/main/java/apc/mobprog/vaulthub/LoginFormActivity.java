@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.*;
 import java.util.List;
 public class LoginFormActivity extends AppCompatActivity {
-    private final userLoginCredentialsHandling a = new userLoginCredentialsHandling( this );
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
