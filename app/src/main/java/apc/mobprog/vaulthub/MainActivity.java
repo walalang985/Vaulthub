@@ -37,12 +37,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity( Register );
             }
         } );
-        c.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity( new Intent(getApplicationContext(), UpdateAccountActivity.class) );
-            }
-        } );
     }
     private void requestPermissions(){
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
