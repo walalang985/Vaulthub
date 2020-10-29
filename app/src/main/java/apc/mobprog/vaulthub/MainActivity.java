@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     }
     private boolean checkPermissions(){
         int storage = ContextCompat.checkSelfPermission( this, Manifest.permission_group.STORAGE );
-        int fingerprint = ContextCompat.checkSelfPermission( this, Manifest.permission.USE_BIOMETRIC );
         if(storage == PackageManager.PERMISSION_GRANTED ){
             return true;
         }
