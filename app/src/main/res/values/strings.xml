@@ -43,4 +43,5 @@
     <string name="update_account">update account</string>
     <string name="delete_account">Delete Account</string>
     <string name="returnn">Return</string>
+    <string name="github">Github</string>
 </resources>
