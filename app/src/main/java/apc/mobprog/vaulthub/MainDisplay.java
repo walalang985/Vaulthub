@@ -102,6 +102,8 @@ public class MainDisplay extends AppCompatActivity{
             case 3:
                 Toast.makeText( getApplicationContext(), "Delete Success", Toast.LENGTH_SHORT ).show();
                 break;
+            default:
+                Toast.makeText( getApplicationContext(), "Nothing was done", Toast.LENGTH_SHORT ).show();
         }
     }
 
