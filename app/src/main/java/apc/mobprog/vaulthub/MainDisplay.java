@@ -21,6 +21,8 @@ public class MainDisplay extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main_display );
+        Intent x = getIntent();
+        stat( x.getStringExtra( "status" ) );
         final Spinner spinner = findViewById( R.id.spinner2 );
         Button add = findViewById( R.id.addAcc ), remove = findViewById( R.id.delete ), update = findViewById( R.id.updateBtn );
         final Button showhide = findViewById( R.id.setPassVisibility );//init seperately since it is used by itself to change its own text
@@ -85,7 +87,23 @@ public class MainDisplay extends AppCompatActivity{
     public void onBackPressed() {
         Toast.makeText(getApplicationContext(), "Action not supported", Toast.LENGTH_SHORT).show();
     }
-
+    private void stat(String stat){
+        int x = Integer.parseInt( stat );
+        switch (x){
+            case 0:
+                Toast.makeText( getApplicationContext(), "Added Successfully", Toast.LENGTH_SHORT ).show();
+                break;
+            case 1:
+                Toast.makeText( getApplicationContext(), "Login Success", Toast.LENGTH_SHORT ).show();
+                break;
+            case 2:
+                Toast.makeText( getApplicationContext(), "Update Success", Toast.LENGTH_SHORT ).show();
+                break;
+            case 3:
+                Toast.makeText( getApplicationContext(), "Delete Success", Toast.LENGTH_SHORT ).show();
+                break;
+        }
+    }
 
 
 }

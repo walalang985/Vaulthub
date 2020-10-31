@@ -66,7 +66,7 @@ public class LoginFormActivity extends AppCompatActivity {
 
                 Cursor cursor = db.fetch( aes128.encrypt( user.getText().toString() ) );
                 if(cursor.getString( 1 ).equals(aes128.encrypt( user.getText().toString() ))  && cursor.getString( 2 ).equals( aes128.encrypt( pass.getText().toString() ) )){
-                    startActivity( new Intent(getApplicationContext(), MainDisplay.class) );
+                    startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status","1" ) );
                 }else{
                     Toast.makeText( getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT ).show();
                 }
