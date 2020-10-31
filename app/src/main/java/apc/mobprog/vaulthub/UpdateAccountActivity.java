@@ -46,7 +46,7 @@ public class UpdateAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 db.updateInfo( spinner.getSelectedItem().toString(), username.getText().toString(),password.getText().toString(),usage.getText().toString());//updates the information inside the database
-                startActivity( new Intent(getApplicationContext(), MainDisplay.class) );
+                startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status","2" ) );
             }
         } );
     }

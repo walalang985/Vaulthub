@@ -40,7 +40,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
         returner.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity( new Intent(getApplicationContext(), MainDisplay.class) );
+                startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status", "3" ) );
             }
         } );
     }

@@ -22,7 +22,7 @@ public class AddAccountActivity extends AppCompatActivity {
             public void onClick(View v) {
                 userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
                 db.insertUserInfo( user.getText().toString(), pass.getText().toString(),use.getText().toString() );
-                q.putExtra( "status", "1" );
+                q.putExtra( "status", "0" );
                 startActivity( q );
             }
         } );
