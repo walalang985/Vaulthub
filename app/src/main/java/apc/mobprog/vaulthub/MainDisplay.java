@@ -75,11 +75,7 @@ public class MainDisplay extends AppCompatActivity{
             //one of the implemented methods under AdatperView
             //also required
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                user.setText( "" );
-                pass.setText( "" );
-                use.setText( "" );
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         } );
 
     }
@@ -106,6 +102,4 @@ public class MainDisplay extends AppCompatActivity{
                 Toast.makeText( getApplicationContext(), "Nothing was done", Toast.LENGTH_SHORT ).show();
         }
     }
-
-
 }
