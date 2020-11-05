@@ -5,7 +5,7 @@ import javax.crypto.spec.*;
 import javax.crypto.*;
 import java.util.*;
 public class aes128 {
-    private static final String KEY = "x/A?D(G+KbPeShVk";
+    private static final String KEY = "MOBPROGISTHEBEST";
     private static final String ENCODING = "UTF-8";
     private static final String TRANSFORMATION = "AES/CBC/PKCS5PADDING";
     private static final String ALGO ="AES";

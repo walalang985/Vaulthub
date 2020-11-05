@@ -1,6 +1,7 @@
 package apc.mobprog.vaulthub;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +37,8 @@ public class AddAccountActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        Toast.makeText(getApplicationContext(), "Action not supported", Toast.LENGTH_SHORT).show();
+        FragmentManager fm = getSupportFragmentManager();
+        DialogFragment dialogFragment = new DialogFragment();
+        dialogFragment.show( fm, "dia" );
     }
 }

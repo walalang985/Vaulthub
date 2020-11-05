@@ -1,1 +1,0 @@
-mga tol tinamad na ko mag implement ng biometrics shit

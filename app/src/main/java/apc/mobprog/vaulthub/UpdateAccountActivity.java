@@ -1,6 +1,7 @@
 package apc.mobprog.vaulthub;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,11 +28,12 @@ public class UpdateAccountActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
                 Cursor cursor = db.fetch(spinner.getSelectedItem().toString());
-                //clear muna ung edittext bago ilagay ung info
                 cursor.moveToFirst();
+                //clears the edittext before putting the data from the database
                 username.setText( "" );
                 password.setText( "" );
                 usage.setText( "" );
+                //automatically writes to the edittext while being editable
                 username.append( cursor.getString( 1 ) );
                 password.append( cursor.getString( 2 ) );
                 usage.append( cursor.getString( 3 ) );
@@ -60,7 +62,9 @@ public class UpdateAccountActivity extends AppCompatActivity {
     //disables the back press
     @Override
     public void onBackPressed() {
-        Toast.makeText(getApplicationContext(), "Action not supported", Toast.LENGTH_SHORT).show();
+        FragmentManager fm = getSupportFragmentManager();
+        DialogFragment dialogFragment = new DialogFragment();
+        dialogFragment.show( fm, "dia" );
     }
 
 }

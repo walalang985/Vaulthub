@@ -1,8 +1,11 @@
 package apc.mobprog.vaulthub;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.content.*;
@@ -20,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
         if(Ver > Build.VERSION_CODES.LOLLIPOP_MR1){
             if(!checkPermissions()){
                 requestPermissions();
+            }
+            else{
+                Toast.makeText( getApplicationContext(), "Please grant the permissions first", Toast.LENGTH_SHORT ).show();
+                System.exit( 0 );
             }
         }
         final Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.test );
@@ -40,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         c.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity( new Intent(getApplicationContext(), AboutActivity.class) );
+
             }
         } );
     }
@@ -56,4 +63,5 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
 }
