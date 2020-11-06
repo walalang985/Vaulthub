@@ -25,16 +25,17 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(user.getText().toString().equals( "" )){
+                if (user.getText().toString().equals( "" )) {
                     userLabel.setVisibility( View.VISIBLE );
-                }
-                else{
+                } else {
                     userLabel.setVisibility( View.INVISIBLE );
                 }
             }
@@ -43,15 +44,16 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(pass.getText().toString().equals( "" )){
+                if (pass.getText().toString().equals( "" )) {
                     passLabel.setVisibility( View.VISIBLE );
-                }
-                else{
+                } else {
                     passLabel.setVisibility( View.INVISIBLE );
                 }
             }
@@ -60,13 +62,13 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
         login.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()){
+                if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
                     Toast.makeText( getApplicationContext(), "One field is empty", Toast.LENGTH_SHORT ).show();
                 }
                 Cursor cursor = db.fetch( aes128.encrypt( user.getText().toString() ) );
-                if(cursor.getString( 1 ).equals(aes128.encrypt( user.getText().toString() ))  && cursor.getString( 2 ).equals( aes128.encrypt( pass.getText().toString() ) )){
-                    startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status","1" ) );
-                }else{
+                if (cursor.getString( 1 ).equals( aes128.encrypt( user.getText().toString() ) ) && cursor.getString( 2 ).equals( aes128.encrypt( pass.getText().toString() ) )) {
+                    startActivity( new Intent( getApplicationContext(), MainDisplay.class ).putExtra( "status", "1" ) );
+                } else {
                     Toast.makeText( getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT ).show();
                 }
             }
@@ -76,9 +78,10 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.cancelBtn:
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity( new Intent( getApplicationContext(), MainActivity.class ) );
                 break;
+        }
     }
 }
