@@ -56,7 +56,7 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
     private View.OnClickListener cancelClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity( new Intent(getApplicationContext(), MainDisplay.class) );
+            startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status", "4" ) );
         }
     };
     //disables the back press

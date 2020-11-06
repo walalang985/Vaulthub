@@ -86,8 +86,9 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
             case 3:
                 Toast.makeText( getApplicationContext(), "Delete Success", Toast.LENGTH_SHORT ).show();
                 break;
-            default:
+            case 4:
                 Toast.makeText( getApplicationContext(), "Nothing was done", Toast.LENGTH_SHORT ).show();
+                break;
         }
     }
 
