@@ -20,6 +20,10 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
         Button cancel = findViewById( R.id.cancelBtn ), login = findViewById( R.id.loginBtn );
         final EditText user = findViewById( R.id.txtUsername ), pass = findViewById( R.id.numPassword );
         final TextView userLabel = findViewById( R.id.user ), passLabel = findViewById( R.id.pass );
+        if(!db.dbExists( getApplicationContext() )){
+            Toast.makeText( getApplicationContext(), "No accounts have been made yet", Toast.LENGTH_SHORT ).show();
+            startActivity( new Intent(getApplicationContext(), RegisterActivity.class) );
+        }
         user.addTextChangedListener( new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

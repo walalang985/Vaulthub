@@ -4,9 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import java.util.ArrayList;
-import java.util.List;
-import androidx.annotation.NonNull;
+
+import java.io.File;
+
 public class userLoginCredentialsHandling extends SQLiteOpenHelper{
     private static final int DB_VER = 1;
     private static final String DB_NAME = "userLoginCredentialsHandling";
@@ -46,5 +46,9 @@ public class userLoginCredentialsHandling extends SQLiteOpenHelper{
             cursor.moveToFirst();
         }
         return cursor;
+    }
+    public boolean dbExists(Context c){
+        File file = c.getDatabasePath( DB_NAME );
+        return file.exists();
     }
 }
