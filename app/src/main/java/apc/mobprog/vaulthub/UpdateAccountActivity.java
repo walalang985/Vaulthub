@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.*;
 import java.util.List;
 
-public class UpdateAccountActivity extends AppCompatActivity {
+public class UpdateAccountActivity extends AppCompatActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -67,4 +67,12 @@ public class UpdateAccountActivity extends AppCompatActivity {
         dialogFragment.show( fm, "dia" );
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.update:
+
+            case R.id.cancel:
+        }
+    }
 }

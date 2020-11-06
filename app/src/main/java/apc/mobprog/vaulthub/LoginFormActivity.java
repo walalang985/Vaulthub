@@ -7,8 +7,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.*;
+
+import org.w3c.dom.Text;
+
 import java.util.List;
-public class LoginFormActivity extends AppCompatActivity {
+public class LoginFormActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -53,27 +56,29 @@ public class LoginFormActivity extends AppCompatActivity {
                 }
             }
         } );
-        cancel.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent x = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity( x );
-            }
-        } );
+        cancel.setOnClickListener( this );
         login.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()){
+                    Toast.makeText( getApplicationContext(), "One field is empty", Toast.LENGTH_SHORT ).show();
+                }
                 Cursor cursor = db.fetch( aes128.encrypt( user.getText().toString() ) );
                 if(cursor.getString( 1 ).equals(aes128.encrypt( user.getText().toString() ))  && cursor.getString( 2 ).equals( aes128.encrypt( pass.getText().toString() ) )){
-                    System.out.println(cursor.getString( 1 ));
                     startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status","1" ) );
                 }else{
                     Toast.makeText( getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT ).show();
                 }
-
-
             }
         } );
+    }
+
+    @Override
+    public void onClick(View v) {
+        userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+        switch (v.getId()){
+            case R.id.cancelBtn:
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                break;
     }
 }

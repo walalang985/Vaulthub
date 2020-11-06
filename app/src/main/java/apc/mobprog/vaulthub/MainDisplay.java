@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainDisplay extends AppCompatActivity{
+public class MainDisplay extends AppCompatActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -32,24 +32,9 @@ public class MainDisplay extends AppCompatActivity{
         List<String> userr = db.getSpinnerItems();//gets all the items under the column username which will be used as headers in the spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>( this, R.layout.support_simple_spinner_dropdown_item,userr );//creates an adapter that the spinner needs
         spinner.setAdapter( adapter );
-        add.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity( new Intent(getApplicationContext(), AddAccountActivity.class) );
-            }
-        } );
-        remove.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity( new Intent(getApplicationContext(), DeleteAccountActivity.class) );
-            }
-        } );
-        update.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity( new Intent(getApplicationContext(), UpdateAccountActivity.class) );
-            }
-        } );
+        add.setOnClickListener(this);
+        remove.setOnClickListener( this );
+        update.setOnClickListener( this );
         //changes the visibility of the password and the text inside the button
         showhide.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -103,6 +88,21 @@ public class MainDisplay extends AppCompatActivity{
                 break;
             default:
                 Toast.makeText( getApplicationContext(), "Nothing was done", Toast.LENGTH_SHORT ).show();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.addAcc:
+                startActivity( new Intent(getApplicationContext(), AddAccountActivity.class) );
+                break;
+            case R.id.delete:
+                startActivity( new Intent(getApplicationContext(), DeleteAccountActivity.class) );
+                break;
+            case R.id.updateBtn:
+                startActivity( new Intent(getApplicationContext(), UpdateAccountActivity.class) );
+                break;
         }
     }
 }

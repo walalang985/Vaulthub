@@ -14,7 +14,7 @@ import android.os.*;
 import android.view.View;
 import android.widget.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     final int Ver = Build.VERSION.SDK_INT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,27 +29,10 @@ public class MainActivity extends AppCompatActivity {
                 System.exit( 0 );
             }
         }
-        final Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.test );
-        a.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent Login = new Intent( MainActivity.this,LoginFormActivity.class );
-                startActivity( Login );
-            }
-        } );
-        b.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent Register = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity( Register );
-            }
-        } );
-        c.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.test );
+        a.setOnClickListener( this );
+        b.setOnClickListener( this );
 
-            }
-        } );
     }
     private void requestPermissions(){
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
@@ -64,4 +47,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnRegister:
+                startActivity( new Intent( getApplicationContext(),RegisterActivity.class ) );
+                break;
+            case R.id.btnLogin:
+                startActivity( new Intent(getApplicationContext(), LoginFormActivity.class) );
+                break;
+        }
+    }
 }
