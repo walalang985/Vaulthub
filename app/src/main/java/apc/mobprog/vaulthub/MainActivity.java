@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 System.exit( 0 );
             }
         }
-        Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.test );
+        Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister );
         a.setOnClickListener( this );
         b.setOnClickListener( this );
 
