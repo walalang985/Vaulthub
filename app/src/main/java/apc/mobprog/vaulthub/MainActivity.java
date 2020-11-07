@@ -11,6 +11,7 @@ import android.Manifest;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.os.*;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -25,11 +26,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 requestPermissions();
             }
             else{
+                //asks the user to grant permissions first
                 Toast.makeText( getApplicationContext(), "Please grant the permissions first", Toast.LENGTH_SHORT ).show();
+                //kills the program while the permissions asked is not yet granted
                 System.exit( 0 );
             }
         }
-        Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.test );
+        Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister );
         a.setOnClickListener( this );
         b.setOnClickListener( this );
 

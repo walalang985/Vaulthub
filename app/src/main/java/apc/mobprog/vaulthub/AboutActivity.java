@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends AppCompatActivity implements View.OnClickListener{
     private final Uri url = Uri.parse( "https://github.com/walalang985/Vaulthub" );
     private final String action = "android.intent.action.VIEW";
     @Override
@@ -16,11 +16,14 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_about );
         Button git = findViewById( R.id.openGit );
-        git.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        git.setOnClickListener( this );
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.openGit:
                 startActivity( new Intent(action, url) );
-            }
-        } );
+                break;
+        }
     }
 }

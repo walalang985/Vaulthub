@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.*;
 import java.util.List;
 
-public class UpdateAccountActivity extends AppCompatActivity implements View.OnClickListener{
+public class UpdateAccountActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -38,11 +38,8 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
                 password.append( cursor.getString( 2 ) );
                 usage.append( cursor.getString( 3 ) );
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         } );
         update.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -64,15 +61,6 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
         DialogFragment dialogFragment = new DialogFragment();
-        dialogFragment.show( fm, "dia" );
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.update:
-
-            case R.id.cancel:
-        }
+        dialogFragment.show( fm, "dia" );//show a dialog about invalid action of some sort
     }
 }

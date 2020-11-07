@@ -39,6 +39,7 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
         showhide.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //transforms the text to either a password or plain text
                 if(showhide.getText().toString().equals( "Show" )&&pass.getTransformationMethod() == PasswordTransformationMethod.getInstance()){
                     pass.setTransformationMethod( HideReturnsTransformationMethod.getInstance() );
                     showhide.setText( "Hide" );
@@ -51,7 +52,9 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
         spinner.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //inits the class userInfoStoreHandling
                 userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+                //gets the row from the database
                 Cursor cursor = db.fetch(spinner.getSelectedItem().toString());
                 cursor.moveToFirst();
                 user.setText( cursor.getString( 1 ) );

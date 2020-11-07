@@ -13,37 +13,23 @@ import android.widget.*;
 
 import java.util.List;
 
-public class DeleteAccountActivity extends AppCompatActivity {
-    final boolean allowBackPress = false;
+public class DeleteAccountActivity extends AppCompatActivity implements View.OnClickListener{
+    private String selItem = "";
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_delete_account );
-        final userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
+        userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
         final Spinner spinner = findViewById( R.id.spins );
         Button deleteBtn = findViewById( R.id.del ), returner = findViewById( R.id.ret );
         List<String> list = db.getSpinnerItems();
         ArrayAdapter<String> adapter = new ArrayAdapter<>( this, R.layout.support_simple_spinner_dropdown_item, list );
         spinner.setAdapter( adapter );
-        deleteBtn.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.deleteUserInfo(spinner.getSelectedItem().toString());
-                if(db.getUserInfoCount() == 0){
-                    startActivity( new Intent(getApplicationContext(),MainDisplay.class) );
-                }else{
-                    //refresh the activity to update the items in the spinner
-                    startActivity( new Intent(getApplicationContext(),DeleteAccountActivity.class) );
-                }
-            }
-        } );
-        returner.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status", "3" ) );
-            }
-        } );
+        selItem = spinner.getSelectedItem().toString();
+        deleteBtn.setOnClickListener( this );
+        returner.setOnClickListener( this );
     }
     @Override
     public void onBackPressed() {
@@ -51,5 +37,23 @@ public class DeleteAccountActivity extends AppCompatActivity {
         DialogFragment dialogFragment = new DialogFragment();
         dialogFragment.show( fm, "dia" );
     }
-
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.del:
+                userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+                db.deleteUserInfo( selItem );
+                if(db.getUserInfoCount() == 0){
+                    //if there is no more account return to MainDisplay.class
+                    startActivity( new Intent(getApplicationContext(),MainDisplay.class).putExtra( "status", "3" ) );
+                }else{
+                    //refresh the activity to update the items in the spinner
+                    startActivity( new Intent(getApplicationContext(),DeleteAccountActivity.class) );
+                }
+                break;
+            case R.id.ret:
+                startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status", "3" ) );
+                break;
+        }
+    }
 }
