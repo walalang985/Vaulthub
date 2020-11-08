@@ -15,12 +15,32 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     final int Ver = Build.VERSION.SDK_INT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+        todo();
+        Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister );
+        a.setOnClickListener( this );
+        b.setOnClickListener( this );
+    }
+    private void todo() {
+        if(!RSA.doKeysExists()) {//checks if the keys exist in the system
+            try {
+                RSA.writeLoginKeys();
+                RSA.writeUserInfoKeys();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if(Ver > Build.VERSION_CODES.LOLLIPOP_MR1){
             if(!checkPermissions()){
                 requestPermissions();
@@ -32,11 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 System.exit( 0 );
             }
         }
-        Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister );
-        a.setOnClickListener( this );
-        b.setOnClickListener( this );
-
     }
+
     private void requestPermissions(){
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
     }

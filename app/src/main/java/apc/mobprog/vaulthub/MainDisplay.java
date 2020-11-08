@@ -13,6 +13,10 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +32,7 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
         Button add = findViewById( R.id.addAcc ), remove = findViewById( R.id.delete ), update = findViewById( R.id.updateBtn );
         final Button showhide = findViewById( R.id.setPassVisibility );//init seperately since it is used by itself to change its own text
         final TextView user = findViewById( R.id.un ),use = findViewById( R.id.us ), pass = findViewById( R.id.pw );
-        userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );//instantiate userInfoStoreHandling to interact with the created database
+        final userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );//instantiate userInfoStoreHandling to interact with the created database
         List<String> userr = db.getSpinnerItems();//gets all the items under the column username which will be used as headers in the spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>( this, R.layout.support_simple_spinner_dropdown_item,userr );//creates an adapter that the spinner needs
         spinner.setAdapter( adapter );
@@ -52,14 +56,22 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
         spinner.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //inits the class userInfoStoreHandling
-                userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+                try {
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.publicKey1 ) );
+                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
+                    PrivateKey privateKey = (PrivateKey) ois1.readObject();
+                    PublicKey publicKey = (PublicKey) ois.readObject();
+                    Cursor cursor = db.fetch( RSA.encrypt( spinner.getSelectedItem().toString(),privateKey  ) );
+                    //Cursor cursor = db.fetch(spinner.getSelectedItem().toString());
+                    cursor.moveToFirst();
+                    user.setText( RSA.decrypt( cursor.getString( 1 ), publicKey ) );
+                    pass.setText( RSA.decrypt( cursor.getString( 2 ), publicKey ) );
+                    use.setText( RSA.decrypt( cursor.getString( 3 ), publicKey ) );
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 //gets the row from the database
-                Cursor cursor = db.fetch(spinner.getSelectedItem().toString());
-                cursor.moveToFirst();
-                user.setText( cursor.getString( 1 ) );
-                pass.setText( cursor.getString( 2 ) );
-                use.setText( cursor.getString( 3 ) );
+
             }
             //one of the implemented methods under AdatperView
             //also required

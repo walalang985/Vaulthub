@@ -5,8 +5,16 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Map;
+
 public class LoginFormActivity extends AppCompatActivity implements View.OnClickListener {
     private String username = "", password = "";
     @Override
@@ -49,10 +57,34 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         } );
-        username = user.getText().toString();
-        password = pass.getText().toString();
         cancel.setOnClickListener( this );
-        login.setOnClickListener( this );
+        login.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
+                    Toast.makeText( getApplicationContext(), "One field is empty please try again", Toast.LENGTH_SHORT ).show();
+                    startActivity( new Intent(getApplicationContext(), LoginFormActivity.class) );
+                }
+                try {
+                    Cursor cursor = db.fetch( 1 );
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.publicKey ) );
+                    PublicKey publicKey = (PublicKey) ois.readObject();
+                    if (user.getText().toString().equals( RSA.decrypt( cursor.getString( 1 ), publicKey ) ) && pass.getText().toString().equals( RSA.decrypt( cursor.getString( 2 ), publicKey ) )) {
+                        startActivity( new Intent( getApplicationContext(), MainDisplay.class ).putExtra( "status", "1" ) );
+                    } else {
+                        Toast.makeText( getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT ).show();
+                    }
+                    //PrivateKey privateKey = (PrivateKey) keys.get( "private" );
+                    //username = RSA.encrypt( cursor.getString( 1 ), privateKey );
+                    //password = RSA.encrypt( cursor.getString( 2 ), privateKey );
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
+            }
+        } );
     }
     @Override
     public void onClick(View v) {
@@ -60,17 +92,6 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.cancelBtn:
                 startActivity( new Intent( getApplicationContext(), MainActivity.class ) );
-                break;
-            case R.id.loginBtn:
-                if (username.isEmpty() || password.isEmpty()) {
-                    Toast.makeText( getApplicationContext(), "One field is empty", Toast.LENGTH_SHORT ).show();
-                }
-                Cursor cursor = db.fetch( aes128.encrypt( username ) );
-                if (cursor.getString( 1 ).equals( aes128.encrypt(username ) ) && cursor.getString( 2 ).equals( aes128.encrypt( password ) )) {
-                    startActivity( new Intent( getApplicationContext(), MainDisplay.class ).putExtra( "status", "1" ) );
-                } else {
-                    Toast.makeText( getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT ).show();
-                }
                 break;
         }
     }

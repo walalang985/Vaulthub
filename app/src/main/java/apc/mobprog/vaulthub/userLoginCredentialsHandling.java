@@ -39,9 +39,9 @@ public class userLoginCredentialsHandling extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery( query, null );
         return cursor.getCount();
     }
-    public Cursor fetch(String input){
+    public Cursor fetch(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery( "SELECT * FROM " + TBL_NAME + " WHERE " + USER + " = ?", new String[]{input} );
+        Cursor cursor = db.rawQuery( "SELECT * FROM " + TBL_NAME + " WHERE " + ID + " = ?", new String[]{Integer.toString( id )} );
         if(cursor != null){
             cursor.moveToFirst();
         }

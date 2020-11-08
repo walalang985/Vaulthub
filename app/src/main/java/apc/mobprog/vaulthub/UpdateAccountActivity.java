@@ -8,6 +8,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.List;
 
 public class UpdateAccountActivity extends AppCompatActivity{
@@ -26,17 +31,27 @@ public class UpdateAccountActivity extends AppCompatActivity{
         spinner.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
-                Cursor cursor = db.fetch(spinner.getSelectedItem().toString());
-                cursor.moveToFirst();
-                //clears the edittext before putting the data from the database
-                username.setText( "" );
-                password.setText( "" );
-                usage.setText( "" );
-                //automatically writes to the edittext while being editable
-                username.append( cursor.getString( 1 ) );
-                password.append( cursor.getString( 2 ) );
-                usage.append( cursor.getString( 3 ) );
+                try{
+                    //clears the edittext before putting the data from the database
+                    username.setText( "" );
+                    password.setText( "" );
+                    usage.setText( "" );
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.publicKey1 ) );
+                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
+                    PublicKey publicKey = (PublicKey) ois.readObject();
+                    PrivateKey privateKey = (PrivateKey) ois1.readObject();
+                    Cursor cursor = db.fetch(RSA.encrypt( spinner.getSelectedItem().toString(), privateKey ));
+                    cursor.moveToFirst();
+                    //automatically writes to the edittext while being editable
+                    username.append( RSA.decrypt( cursor.getString( 1 ), publicKey ) );
+                    password.append( RSA.decrypt( cursor.getString( 2 ), publicKey ) );
+                    usage.append( RSA.decrypt( cursor.getString( 3 ), publicKey ) );
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -44,8 +59,17 @@ public class UpdateAccountActivity extends AppCompatActivity{
         update.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateInfo( spinner.getSelectedItem().toString(), username.getText().toString(),password.getText().toString(),usage.getText().toString());//updates the information inside the database
-                startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status","2" ) );
+                try {
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
+                    PrivateKey privateKey = (PrivateKey) ois.readObject();
+                    db.updateInfo( RSA.encrypt( spinner.getSelectedItem().toString(), privateKey ),
+                                   RSA.encrypt( username.getText().toString(), privateKey ),
+                                   RSA.encrypt( password.getText().toString(), privateKey ),
+                                   RSA.encrypt( usage.getText().toString(), privateKey ));
+                    startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status","2" ) );
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } );
     }

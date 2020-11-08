@@ -11,6 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.security.PrivateKey;
 import java.util.List;
 
 public class DeleteAccountActivity extends AppCompatActivity implements View.OnClickListener{
@@ -41,15 +44,22 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.del:
-                userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
-                db.deleteUserInfo( selItem );
-                if(db.getUserInfoCount() == 0){
-                    //if there is no more account return to MainDisplay.class
-                    startActivity( new Intent(getApplicationContext(),MainDisplay.class).putExtra( "status", "3" ) );
-                }else{
-                    //refresh the activity to update the items in the spinner
-                    startActivity( new Intent(getApplicationContext(),DeleteAccountActivity.class) );
+                try{
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
+                    PrivateKey privateKey = (PrivateKey) ois.readObject();
+                    userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+                    db.deleteUserInfo( RSA.encrypt( selItem, privateKey ) );
+                    if(db.getUserInfoCount() == 0){
+                        //if there is no more account return to MainDisplay.class
+                        startActivity( new Intent(getApplicationContext(),MainDisplay.class).putExtra( "status", "3" ) );
+                    }else{
+                        //refresh the activity to update the items in the spinner
+                        startActivity( new Intent(getApplicationContext(),DeleteAccountActivity.class) );
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+
                 break;
             case R.id.ret:
                 startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status", "3" ) );

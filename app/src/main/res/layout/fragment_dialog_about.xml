@@ -4,21 +4,4 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DialogAboutFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
-
-    <fragment
-        android:id="@+id/fragment"
-        android:name="apc.mobprog.vaulthub.DialogFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="178dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".DialogAboutFragment"/>

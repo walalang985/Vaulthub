@@ -4,6 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +46,18 @@ public class userInfoStoreHandling extends SQLiteOpenHelper{
     }
     public List<String> getSpinnerItems(){
         List<String> list = new ArrayList<String>();
-
         String selectQuery = "SELECT  * FROM " + TBL_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if(cursor.moveToFirst()){
             do{
-                list.add( cursor.getString( 1 ));
+                try {
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.publicKey1 ) );
+                    PublicKey publicKey = (PublicKey) ois.readObject();
+                    list.add( RSA.decrypt( cursor.getString( 1 ), publicKey ) );
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }while (cursor.moveToNext());
         }
         cursor.close();
