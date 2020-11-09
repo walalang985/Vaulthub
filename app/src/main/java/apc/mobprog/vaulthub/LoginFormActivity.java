@@ -5,15 +5,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
-
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.Map;
 
 public class LoginFormActivity extends AppCompatActivity implements View.OnClickListener {
     private String username = "", password = "";

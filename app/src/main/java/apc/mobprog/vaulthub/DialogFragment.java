@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 public class DialogFragment extends androidx.fragment.app.DialogFragment {
-    public DialogFragment() {
-        // Required empty public constructor
+    String head,msg;
+    public DialogFragment(String Title, String message) {
+        this.head = Title;
+        this.msg = message;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -22,7 +24,7 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setTitle( "Invalid Action" ).setMessage( "The action you were trying to do is invalid" ).setPositiveButton( "Ok", new DialogInterface.OnClickListener() {
+                .setTitle( head ).setMessage( msg ).setPositiveButton( "Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

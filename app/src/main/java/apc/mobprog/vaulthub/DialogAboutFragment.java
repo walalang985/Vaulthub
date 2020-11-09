@@ -33,7 +33,7 @@ public class DialogAboutFragment extends androidx.fragment.app.DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setTitle( "About Vaulthub" )
 
-                .setMessage( "This vault ensures that the data stored in this application would be secured since it would undergo two levels of Encryption and Decryption. This vault would also feature a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords" )
+                .setMessage( "This vault ensures that the data stored in this application would be secured since it would undergo two levels of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords" )
 
                 .setPositiveButton( "Ok", new DialogInterface.OnClickListener() {
                     @Override

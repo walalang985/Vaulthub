@@ -37,7 +37,7 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
-        DialogFragment dialogFragment = new DialogFragment();
+        DialogFragment dialogFragment = new DialogFragment("Invalid Action","The action you are trying to do is invalid");
         dialogFragment.show( fm, "dia" );
     }
     @Override

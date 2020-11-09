@@ -1,25 +1,16 @@
 package apc.mobprog.vaulthub;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.os.*;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     final int Ver = Build.VERSION.SDK_INT;
@@ -28,9 +19,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
         todo();
-        Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister );
+        Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.btnAbout );
         a.setOnClickListener( this );
         b.setOnClickListener( this );
+        c.setOnClickListener( this );
     }
     private void todo() {
         if(!RSA.doKeysExists()) {//checks if the keys exist in the system
@@ -75,6 +67,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btnLogin:
                 startActivity( new Intent(getApplicationContext(), LoginFormActivity.class) );
+                break;
+            case R.id.btnAbout:
+                FragmentManager fm = getSupportFragmentManager();
+                DialogFragment dialogFragment = new DialogFragment("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo two levels of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords");
+                dialogFragment.show( fm, "dia" );
                 break;
         }
     }

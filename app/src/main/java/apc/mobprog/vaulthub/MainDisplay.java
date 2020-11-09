@@ -2,23 +2,17 @@ package apc.mobprog.vaulthub;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
-
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainDisplay extends AppCompatActivity implements View.OnClickListener{
@@ -83,7 +77,7 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
-        DialogFragment dialogFragment = new DialogFragment();
+        DialogFragment dialogFragment = new DialogFragment("Invalid Action","The action you are trying to do is invalid");
         dialogFragment.show( fm, "dia" );
     }
     private void stat(String stat){
