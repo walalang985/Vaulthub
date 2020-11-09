@@ -1,17 +1,13 @@
 package apc.mobprog.vaulthub;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-
 import android.Manifest;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.os.*;
 import android.view.View;
 import android.widget.*;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     final int Ver = Build.VERSION.SDK_INT;
     @Override
@@ -38,14 +34,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 requestPermissions();
             }
             else{
-                //asks the user to grant permissions first
-                Toast.makeText( getApplicationContext(), "Please grant the permissions first", Toast.LENGTH_SHORT ).show();
-                //kills the program while the permissions asked is not yet granted
-                System.exit( 0 );
+                new DialogFragment( "IMPORTANT","Please grant the permissions first" ).show( getSupportFragmentManager(), "dia" );
+                System.exit( 1 );
             }
         }
     }
-
     private void requestPermissions(){
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
     }
@@ -58,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -69,9 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity( new Intent(getApplicationContext(), LoginFormActivity.class) );
                 break;
             case R.id.btnAbout:
-                FragmentManager fm = getSupportFragmentManager();
-                DialogFragment dialogFragment = new DialogFragment("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords");
-                dialogFragment.show( fm, "dia" );
+                new DialogFragment("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords").show( getSupportFragmentManager(),"dia" );
                 break;
         }
     }

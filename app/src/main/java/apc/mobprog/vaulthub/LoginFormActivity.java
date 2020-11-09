@@ -10,9 +10,7 @@ import android.widget.*;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.security.PublicKey;
-
 public class LoginFormActivity extends AppCompatActivity implements View.OnClickListener {
-    private String username = "", password = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -22,8 +20,7 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
         final EditText user = findViewById( R.id.txtUsername ), pass = findViewById( R.id.numPassword );
         final TextView userLabel = findViewById( R.id.user ), passLabel = findViewById( R.id.pass );
         if(!db.dbExists( getApplicationContext() )){
-            Toast.makeText( getApplicationContext(), "No accounts have been made yet", Toast.LENGTH_SHORT ).show();
-            startActivity( new Intent(getApplicationContext(), RegisterActivity.class) );
+            new DialogFragment( "No Accounts","No accounts have been made yet.", RegisterActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "dia" );
         }
         user.addTextChangedListener( new TextWatcher() {
             @Override
@@ -59,8 +56,7 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
 
                 if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
-                    Toast.makeText( getApplicationContext(), "One field is empty please try again", Toast.LENGTH_SHORT ).show();
-                    startActivity( new Intent(getApplicationContext(), LoginFormActivity.class) );
+                    new DialogFragment( "Empty fields","Oops, one of the fields is empty please fill it up first" ).show( getSupportFragmentManager(),"dia" );
                 }
                 try {
                     Cursor cursor = db.fetch( 1 );
@@ -69,16 +65,11 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
                     if (user.getText().toString().equals( RSA.decrypt( cursor.getString( 1 ), publicKey ) ) && pass.getText().toString().equals( RSA.decrypt( cursor.getString( 2 ), publicKey ) )) {
                         startActivity( new Intent( getApplicationContext(), MainDisplay.class ).putExtra( "status", "1" ) );
                     } else {
-                        Toast.makeText( getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT ).show();
+                        new DialogFragment( "Login Failed", "Oops, the username or password does not match any data from our database" ).show( getSupportFragmentManager(), "dia" );
                     }
-                    //PrivateKey privateKey = (PrivateKey) keys.get( "private" );
-                    //username = RSA.encrypt( cursor.getString( 1 ), privateKey );
-                    //password = RSA.encrypt( cursor.getString( 2 ), privateKey );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-
-
             }
         } );
     }

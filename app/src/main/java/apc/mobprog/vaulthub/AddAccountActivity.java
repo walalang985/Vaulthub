@@ -1,6 +1,7 @@
 package apc.mobprog.vaulthub;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
@@ -29,7 +30,7 @@ public class AddAccountActivity extends AppCompatActivity {
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
                     db.insertUserInfo( RSA.encrypt( user.getText().toString(), privateKey ), RSA.encrypt( pass.getText().toString(), privateKey ), RSA.encrypt( use.getText().toString(), privateKey) );
-                    startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status", "0" ) );
+                    new DialogFragment( "Action Completed", "The account was added successfully", MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "dia" );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -38,14 +39,12 @@ public class AddAccountActivity extends AppCompatActivity {
         cancel.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status", "4" ) );
+                startActivity( new Intent(getApplicationContext(), MainDisplay.class));
             }
         } );
     }
     @Override
     public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-        DialogFragment dialogFragment = new DialogFragment("Invalid Action","The action you are trying to do is invalid");
-        dialogFragment.show( fm, "dia" );
+        new DialogFragment("Invalid Action","The action you are trying to do is invalid").show( getSupportFragmentManager(), "dia" );
     }
 }

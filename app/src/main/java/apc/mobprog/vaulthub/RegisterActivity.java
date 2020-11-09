@@ -29,6 +29,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         register.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
+                    new DialogFragment( "Empty fields","Oops, one of the fields is empty please fill it up first" ).show( getSupportFragmentManager(),"dia" );
+                }
                 try {
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
@@ -36,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         db.insertUserLogin( RSA.encrypt( user.getText().toString(), privateKey ),RSA.encrypt( pass.getText().toString(), privateKey ) );
                         startActivity( new Intent( getApplicationContext(), LoginFormActivity.class ) );
                     }else{
-                        Toast.makeText( getApplicationContext(), "Sorry one account per device", Toast.LENGTH_SHORT ).show();
+                        new DialogFragment( "Account Creation Failed", "Sorry only one account per device" ).show( getSupportFragmentManager(), "dia" );
                     }
                 } catch (Exception e) {
                    e.printStackTrace();
@@ -81,10 +84,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.cancelBtn:
                 startActivity( new Intent(getApplicationContext(), MainActivity.class) );
-                break;
-            case R.id.registerBtn:
-
-
                 break;
         }
     }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -18,7 +19,6 @@ import java.util.List;
 
 public class DeleteAccountActivity extends AppCompatActivity implements View.OnClickListener{
     private String selItem = "";
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -36,9 +36,7 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
     }
     @Override
     public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-        DialogFragment dialogFragment = new DialogFragment("Invalid Action","The action you are trying to do is invalid");
-        dialogFragment.show( fm, "dia" );
+        new DialogFragment("Invalid Action","The action you are trying to do is invalid").show( getSupportFragmentManager(), "dia" );
     }
     @Override
     public void onClick(View v) {
@@ -49,20 +47,13 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
                     userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
                     db.deleteUserInfo( RSA.encrypt( selItem, privateKey ) );
-                    if(db.getUserInfoCount() == 0){
-                        //if there is no more account return to MainDisplay.class
-                        startActivity( new Intent(getApplicationContext(),MainDisplay.class).putExtra( "status", "3" ) );
-                    }else{
-                        //refresh the activity to update the items in the spinner
-                        startActivity( new Intent(getApplicationContext(),DeleteAccountActivity.class) );
-                    }
+                    new DialogFragment( "Action Complete", "Successfully deleted the account" , MainDisplay.class, getApplicationContext()).show( getSupportFragmentManager(), "dia" );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-
                 break;
             case R.id.ret:
-                startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status", "3" ) );
+                new DialogFragment( "Action Not Performed", "Returning you now", MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "dia" );
                 break;
         }
     }

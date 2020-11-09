@@ -49,9 +49,6 @@ public class UpdateAccountActivity extends AppCompatActivity{
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-
-
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -66,7 +63,8 @@ public class UpdateAccountActivity extends AppCompatActivity{
                                    RSA.encrypt( username.getText().toString(), privateKey ),
                                    RSA.encrypt( password.getText().toString(), privateKey ),
                                    RSA.encrypt( usage.getText().toString(), privateKey ));
-                    startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status","2" ) );
+                    //shows a dialog and redirects the user back to the MainDisplay.class
+                    new DialogFragment( "Action Complete", "Successfully updated the account",MainDisplay.class ,getApplicationContext()).show( getSupportFragmentManager(), "dia" );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -77,14 +75,12 @@ public class UpdateAccountActivity extends AppCompatActivity{
     private View.OnClickListener cancelClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity( new Intent(getApplicationContext(), MainDisplay.class).putExtra( "status", "4" ) );
+            startActivity( new Intent(getApplicationContext(), MainDisplay.class) );
         }
     };
     //disables the back press
     @Override
     public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-        DialogFragment dialogFragment = new DialogFragment("Invalid Action","The action you are trying to do is invalid");
-        dialogFragment.show( fm, "dia" );//show a dialog about invalid action of some sort
+        new DialogFragment("Invalid Action","The action you are trying to do is invalid").show( getSupportFragmentManager(), "dia" );//show a dialog about invalid action of some sort
     }
 }

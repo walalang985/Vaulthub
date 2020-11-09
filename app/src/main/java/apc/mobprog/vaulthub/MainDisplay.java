@@ -1,12 +1,17 @@
 package apc.mobprog.vaulthub;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
+import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.io.FileInputStream;
@@ -20,8 +25,6 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main_display );
-        Intent x = getIntent();
-        stat( x.getStringExtra( "status" ) );
         final Spinner spinner = findViewById( R.id.spinner2 );
         Button add = findViewById( R.id.addAcc ), remove = findViewById( R.id.delete ), update = findViewById( R.id.updateBtn );
         final Button showhide = findViewById( R.id.setPassVisibility );//init seperately since it is used by itself to change its own text
@@ -76,31 +79,8 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
     }
     @Override
     public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-        DialogFragment dialogFragment = new DialogFragment("Invalid Action","The action you are trying to do is invalid");
-        dialogFragment.show( fm, "dia" );
+        new DialogFragment( "IMPORTANT", "Are you sure you want to log out", 2, MainActivity.class , getApplicationContext()).show( getSupportFragmentManager(),"dia" );
     }
-    private void stat(String stat){
-        int x = Integer.parseInt( stat );
-        switch (x){
-            case 0:
-                Toast.makeText( getApplicationContext(), "Added Successfully", Toast.LENGTH_SHORT ).show();
-                break;
-            case 1:
-                Toast.makeText( getApplicationContext(), "Login Success", Toast.LENGTH_SHORT ).show();
-                break;
-            case 2:
-                Toast.makeText( getApplicationContext(), "Update Success", Toast.LENGTH_SHORT ).show();
-                break;
-            case 3:
-                Toast.makeText( getApplicationContext(), "Delete Success", Toast.LENGTH_SHORT ).show();
-                break;
-            case 4:
-                Toast.makeText( getApplicationContext(), "Nothing was done", Toast.LENGTH_SHORT ).show();
-                break;
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
