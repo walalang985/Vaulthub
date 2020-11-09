@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btnAbout:
                 FragmentManager fm = getSupportFragmentManager();
-                DialogFragment dialogFragment = new DialogFragment("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo two levels of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords");
+                DialogFragment dialogFragment = new DialogFragment("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords");
                 dialogFragment.show( fm, "dia" );
                 break;
         }
