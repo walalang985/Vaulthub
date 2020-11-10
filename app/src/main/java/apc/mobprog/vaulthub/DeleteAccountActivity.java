@@ -36,7 +36,7 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
     }
     @Override
     public void onBackPressed() {
-        new DialogFragment("Invalid Action","The action you are trying to do is invalid").show( getSupportFragmentManager(), "dia" );
+        new showDialog("Invalid Action","The action you are trying to do is invalid", 1,null,null).show( getSupportFragmentManager(), "" );
     }
     @Override
     public void onClick(View v) {
@@ -47,13 +47,13 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
                     userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
                     db.deleteUserInfo( RSA.encrypt( selItem, privateKey ) );
-                    new DialogFragment( "Action Complete", "Successfully deleted the account" , MainDisplay.class, getApplicationContext()).show( getSupportFragmentManager(), "dia" );
+                    new showDialog( "Action Complete", "Successfully deleted the account",1 , MainDisplay.class, getApplicationContext()).show( getSupportFragmentManager(), "" );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
                 break;
             case R.id.ret:
-                new DialogFragment( "Action Not Performed", "Returning you now", MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "dia" );
+                new showDialog( "Action Not Performed", "Returning you now", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
                 break;
         }
     }

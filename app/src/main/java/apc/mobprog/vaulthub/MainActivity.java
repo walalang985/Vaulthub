@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 requestPermissions();
             }
             else{
-                new DialogFragment( "IMPORTANT","Please grant the permissions first" ).show( getSupportFragmentManager(), "dia" );
+                new showDialog( "IMPORTANT","Please grant the permissions first", Integer.parseInt( null ),null,null  ).show( getSupportFragmentManager(), "" );
                 System.exit( 1 );
             }
         }
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity( new Intent(getApplicationContext(), LoginFormActivity.class) );
                 break;
             case R.id.btnAbout:
-                new DialogFragment("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords").show( getSupportFragmentManager(),"dia" );
+                new showDialog("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords",1, null,null).show( getSupportFragmentManager(),"" );
                 break;
         }
     }

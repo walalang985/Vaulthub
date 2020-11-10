@@ -43,13 +43,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/numPassword"
+        android:id="@+id/txtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="374dp"
         android:ems="10"
         android:importantForAutofill="no"
-        android:inputType="numberPassword"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
         android:text="@string/username"
         android:textAlignment="viewStart"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/numPassword"
+        app:layout_constraintBottom_toTopOf="@+id/txtPassword"
         app:layout_constraintStart_toStartOf="@+id/txtUsername"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
@@ -77,12 +77,12 @@
         android:layout_height="0dp"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="70dp"
-        android:labelFor="@id/numPassword"
+        android:labelFor="@id/txtPassword"
         android:text="@string/password"
         android:textAlignment="viewStart"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/loginBtn"
-        app:layout_constraintStart_toStartOf="@+id/numPassword"
+        app:layout_constraintStart_toStartOf="@+id/txtPassword"
         app:layout_constraintTop_toBottomOf="@+id/txtUsername"
         tools:visibility="visible" />
 

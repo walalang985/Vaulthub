@@ -79,7 +79,7 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
     }
     @Override
     public void onBackPressed() {
-        new DialogFragment( "IMPORTANT", "Are you sure you want to log out", 2, MainActivity.class , getApplicationContext()).show( getSupportFragmentManager(),"dia" );
+        new showDialog( "IMPORTANT", "Are you sure you want to log out", 2, MainActivity.class , getApplicationContext()).show( getSupportFragmentManager(),"" );
     }
     @Override
     public void onClick(View v) {

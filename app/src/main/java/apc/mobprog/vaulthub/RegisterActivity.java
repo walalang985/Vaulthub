@@ -1,8 +1,9 @@
 package apc.mobprog.vaulthub;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.*;
-import android.util.Log;
 import android.view.View;
 import android.content.*;
 import android.widget.*;
@@ -10,8 +11,6 @@ import android.widget.*;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
     @Override
@@ -19,7 +18,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_register );
         Button cancel = findViewById( R.id.cancelBtn ), register = findViewById( R.id.registerBtn );
-        final EditText user = findViewById( R.id.txtUsername ),pass = findViewById( R.id.numPassword );
+        final EditText user = findViewById( R.id.txtUsername ),pass = findViewById( R.id.txtPassword );
         final TextView userLabel = findViewById( R.id.user ), passLabel = findViewById( R.id.pass );
         final userLoginCredentialsHandling db = new userLoginCredentialsHandling( getApplicationContext() );
 
@@ -30,16 +29,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
-                    new DialogFragment( "Empty fields","Oops, one of the fields is empty please fill it up first" ).show( getSupportFragmentManager(),"dia" );
+                    new showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first",1, null, null ).show( getSupportFragmentManager(),"" );
                 }
+
                 try {
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey ) );
-                    PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    if(db.getUserLoginCount() == 0) {
-                        db.insertUserLogin( RSA.encrypt( user.getText().toString(), privateKey ),RSA.encrypt( pass.getText().toString(), privateKey ) );
-                        startActivity( new Intent( getApplicationContext(), LoginFormActivity.class ) );
-                    }else{
-                        new DialogFragment( "Account Creation Failed", "Sorry only one account per device" ).show( getSupportFragmentManager(), "dia" );
+                    if(pass.getText().toString().length() < 6){
+                        new showDialog( "Notice", "Passwords should have at least 6 characters", 1, null,null ).show( getSupportFragmentManager(),"" );
+                    }else {
+                        ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey ) );
+                        PrivateKey privateKey = (PrivateKey) ois.readObject();
+                        if (db.getUserLoginCount() == 0) {
+                            db.insertUserLogin( RSA.encrypt( user.getText().toString(), privateKey ), RSA.encrypt( pass.getText().toString(), privateKey ) );
+                            startActivity( new Intent( getApplicationContext(), LoginFormActivity.class ) );
+                        } else {
+                            new showDialog( "Account Creation Failed", "Sorry only one account per device", 1, null, null ).show( getSupportFragmentManager(), "" );
+                        }
                     }
                 } catch (Exception e) {
                    e.printStackTrace();

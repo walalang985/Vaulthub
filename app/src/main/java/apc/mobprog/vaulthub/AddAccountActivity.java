@@ -30,7 +30,7 @@ public class AddAccountActivity extends AppCompatActivity {
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
                     db.insertUserInfo( RSA.encrypt( user.getText().toString(), privateKey ), RSA.encrypt( pass.getText().toString(), privateKey ), RSA.encrypt( use.getText().toString(), privateKey) );
-                    new DialogFragment( "Action Completed", "The account was added successfully", MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "dia" );
+                    new showDialog( "Action Completed", "The account was added successfully", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -45,6 +45,6 @@ public class AddAccountActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        new DialogFragment("Invalid Action","The action you are trying to do is invalid").show( getSupportFragmentManager(), "dia" );
+        new showDialog("Invalid Action","The action you are trying to do is invalid", 1, null,null).show( getSupportFragmentManager(), "" );
     }
 }

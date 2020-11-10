@@ -17,10 +17,10 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
         setContentView( R.layout.activity_login_form );
         final userLoginCredentialsHandling db = new userLoginCredentialsHandling( getApplicationContext() );
         Button cancel = findViewById( R.id.cancelBtn ), login = findViewById( R.id.loginBtn );
-        final EditText user = findViewById( R.id.txtUsername ), pass = findViewById( R.id.numPassword );
+        final EditText user = findViewById( R.id.txtUsername ), pass = findViewById( R.id.txtPassword );
         final TextView userLabel = findViewById( R.id.user ), passLabel = findViewById( R.id.pass );
         if(!db.dbExists( getApplicationContext() )){
-            new DialogFragment( "No Accounts","No accounts have been made yet.", RegisterActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "dia" );
+            new showDialog( "No Accounts","No accounts have been made yet.",1, RegisterActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
         }
         user.addTextChangedListener( new TextWatcher() {
             @Override
@@ -56,7 +56,7 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
 
                 if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
-                    new DialogFragment( "Empty fields","Oops, one of the fields is empty please fill it up first" ).show( getSupportFragmentManager(),"dia" );
+                    new showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first", 1, null, null ).show( getSupportFragmentManager(),"" );
                 }
                 try {
                     Cursor cursor = db.fetch( 1 );
@@ -65,7 +65,7 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
                     if (user.getText().toString().equals( RSA.decrypt( cursor.getString( 1 ), publicKey ) ) && pass.getText().toString().equals( RSA.decrypt( cursor.getString( 2 ), publicKey ) )) {
                         startActivity( new Intent( getApplicationContext(), MainDisplay.class ).putExtra( "status", "1" ) );
                     } else {
-                        new DialogFragment( "Login Failed", "Oops, the username or password does not match any data from our database" ).show( getSupportFragmentManager(), "dia" );
+                        new showDialog( "Login Failed", "Oops, the username or password does not match any data from our database",1, null, null ).show( getSupportFragmentManager(), "" );
                     }
                 }catch (Exception e){
                     e.printStackTrace();

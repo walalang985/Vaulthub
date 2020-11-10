@@ -63,8 +63,8 @@ public class UpdateAccountActivity extends AppCompatActivity{
                                    RSA.encrypt( username.getText().toString(), privateKey ),
                                    RSA.encrypt( password.getText().toString(), privateKey ),
                                    RSA.encrypt( usage.getText().toString(), privateKey ));
-                    //shows a dialog and redirects the user back to the MainDisplay.class
-                    new DialogFragment( "Action Complete", "Successfully updated the account",MainDisplay.class ,getApplicationContext()).show( getSupportFragmentManager(), "dia" );
+                    //shows a log and redirects the user back to the MainDisplay.class
+                    new showDialog( "Action Complete", "Successfully updated the account",1 ,MainDisplay.class ,getApplicationContext()).show( getSupportFragmentManager(), "" );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -81,6 +81,6 @@ public class UpdateAccountActivity extends AppCompatActivity{
     //disables the back press
     @Override
     public void onBackPressed() {
-        new DialogFragment("Invalid Action","The action you are trying to do is invalid").show( getSupportFragmentManager(), "dia" );//show a dialog about invalid action of some sort
+        new showDialog("Invalid Action","The action you are trying to do is invalid",1, null, null).show( getSupportFragmentManager(), "" );//show a dialog about invalid action of some sort
     }
 }
