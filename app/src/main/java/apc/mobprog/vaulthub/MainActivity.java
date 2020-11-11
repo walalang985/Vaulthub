@@ -35,14 +35,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             else{
                 new showDialog( "IMPORTANT","Please grant the permissions first", Integer.parseInt( null ),null,null  ).show( getSupportFragmentManager(), "" );
-                System.exit( 1 );
+                System.exit( 0 );
             }
         }
     }
     private void requestPermissions(){
+        //asks the users for the permissions which enables most of the functionality of this project
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
     }
     private boolean checkPermissions(){
+        //checks if the permissions are granted by the user
         int storage = ContextCompat.checkSelfPermission( this, Manifest.permission_group.STORAGE );
         if(storage == PackageManager.PERMISSION_GRANTED ){
             return true;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){

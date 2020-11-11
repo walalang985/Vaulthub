@@ -29,7 +29,9 @@ public class AddAccountActivity extends AppCompatActivity {
                 try {
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
+                    //inserts the info to the database while encrypting it at the same time
                     db.insertUserInfo( RSA.encrypt( user.getText().toString(), privateKey ), RSA.encrypt( pass.getText().toString(), privateKey ), RSA.encrypt( use.getText().toString(), privateKey) );
+                    //shows a dialog and returning the user to the MainDisplay.class after 1.5 seconds
                     new showDialog( "Action Completed", "The account was added successfully", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
                 }catch (Exception e){
                     e.printStackTrace();

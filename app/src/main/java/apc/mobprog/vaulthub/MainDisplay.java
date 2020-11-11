@@ -43,10 +43,10 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
                 //transforms the text to either a password or plain text
                 if(showhide.getText().toString().equals( "Show" )&&pass.getTransformationMethod() == PasswordTransformationMethod.getInstance()){
                     pass.setTransformationMethod( HideReturnsTransformationMethod.getInstance() );
-                    showhide.setText( "Hide" );
+                    showhide.setText( R.string.hide );
                 }else{
                     pass.setTransformationMethod( PasswordTransformationMethod.getInstance() );
-                    showhide.setText( "Show" );
+                    showhide.setText( R.string.show );
                 }
             }
         } );
@@ -54,21 +54,20 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
+                    //reads the key from the local file created
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.publicKey1 ) );
                     ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
                     PrivateKey privateKey = (PrivateKey) ois1.readObject();
                     PublicKey publicKey = (PublicKey) ois.readObject();
+                    //gets the row from the database and encrypts the current selected item to match it in the database
                     Cursor cursor = db.fetch( RSA.encrypt( spinner.getSelectedItem().toString(),privateKey  ) );
-                    //Cursor cursor = db.fetch(spinner.getSelectedItem().toString());
-                    cursor.moveToFirst();
+                    cursor.moveToFirst();//if the method .moveToFirst is not called it would cause an Exception called CursorIndexOutOfBoundsException
                     user.setText( RSA.decrypt( cursor.getString( 1 ), publicKey ) );
                     pass.setText( RSA.decrypt( cursor.getString( 2 ), publicKey ) );
                     use.setText( RSA.decrypt( cursor.getString( 3 ), publicKey ) );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                //gets the row from the database
-
             }
             //one of the implemented methods under AdatperView
             //also required
@@ -79,6 +78,7 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
     }
     @Override
     public void onBackPressed() {
+        //shows a dialog confirming if the user wants to logout
         new showDialog( "IMPORTANT", "Are you sure you want to log out", 2, MainActivity.class , getApplicationContext()).show( getSupportFragmentManager(),"" );
     }
     @Override

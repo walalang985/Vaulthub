@@ -46,4 +46,6 @@
     <string name="github">Github</string>
     <string name="about_vaulthub">About Vaulthub</string>
     <string name="vaulthub">VAULTHUB</string>
+    <string name="show">Show</string>
+    <string name="hide">Hide</string>
 </resources>

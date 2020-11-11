@@ -25,7 +25,7 @@ public class UpdateAccountActivity extends AppCompatActivity{
         Button cancel = findViewById( R.id.cancel ), update = findViewById( R.id.update );
         cancel.setOnClickListener( cancelClicked );
         final userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
-        List<String> userr = db.getSpinnerItems();
+        List<String> userr = db.getSpinnerItems();//loads the items from the database
         ArrayAdapter<String> adapter = new ArrayAdapter<>( this, R.layout.support_simple_spinner_dropdown_item,userr );
         spinner.setAdapter( adapter );
         spinner.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {

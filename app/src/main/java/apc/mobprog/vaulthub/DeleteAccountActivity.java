@@ -23,7 +23,6 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_delete_account );
-        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
         userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
         final Spinner spinner = findViewById( R.id.spins );
         Button deleteBtn = findViewById( R.id.del ), returner = findViewById( R.id.ret );
@@ -38,6 +37,7 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
     public void onBackPressed() {
         new showDialog("Invalid Action","The action you are trying to do is invalid", 1,null,null).show( getSupportFragmentManager(), "" );
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -46,7 +46,9 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
                     userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+                    //deletes the account in the database
                     db.deleteUserInfo( RSA.encrypt( selItem, privateKey ) );
+                    //shows a dialog and returns the user back to MainDisplay
                     new showDialog( "Action Complete", "Successfully deleted the account",1 , MainDisplay.class, getApplicationContext()).show( getSupportFragmentManager(), "" );
                 }catch (Exception e){
                     e.printStackTrace();

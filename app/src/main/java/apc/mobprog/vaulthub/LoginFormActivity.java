@@ -20,6 +20,7 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
         final EditText user = findViewById( R.id.txtUsername ), pass = findViewById( R.id.txtPassword );
         final TextView userLabel = findViewById( R.id.user ), passLabel = findViewById( R.id.pass );
         if(!db.dbExists( getApplicationContext() )){
+            //redirects the account if the database is not yet present in the file system
             new showDialog( "No Accounts","No accounts have been made yet.",1, RegisterActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
         }
         user.addTextChangedListener( new TextWatcher() {

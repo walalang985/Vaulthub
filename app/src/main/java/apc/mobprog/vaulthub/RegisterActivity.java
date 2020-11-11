@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             db.insertUserLogin( RSA.encrypt( user.getText().toString(), privateKey ), RSA.encrypt( pass.getText().toString(), privateKey ) );
                             startActivity( new Intent( getApplicationContext(), LoginFormActivity.class ) );
                         } else {
-                            new showDialog( "Account Creation Failed", "Sorry only one account per device", 1, null, null ).show( getSupportFragmentManager(), "" );
+                            new showDialog( "Account Creation Failed", "Sorry only one account per device", 1, LoginFormActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
                         }
                     }
                 } catch (Exception e) {

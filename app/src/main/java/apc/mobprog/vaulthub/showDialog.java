@@ -17,6 +17,7 @@ public class showDialog  extends DialogFragment {
     int numBtn;
     @Nullable Class aClass;
     @Nullable Context context;
+    //constructor for this class
     public showDialog(@NonNull String Title, @NonNull String message, int num, @Nullable Class classs, @Nullable Context c){
         this.head = Title;
         this.msg = message;
@@ -57,6 +58,13 @@ public class showDialog  extends DialogFragment {
                     }
                 } ).create();
                 break;
+            case 3:
+                dialog = new AlertDialog.Builder( getActivity() ).setTitle( head ).setMessage( msg ).setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                } ).create();
             default:
                 throw new IllegalStateException( "Unexpected value: " + numBtn );
         }

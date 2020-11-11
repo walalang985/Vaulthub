@@ -1,11 +1,6 @@
 package apc.mobprog.vaulthub;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.io.*;
+import java.security.*;
 import java.util.Base64;
 import javax.crypto.Cipher;
 public class RSA {
@@ -65,6 +60,7 @@ public class RSA {
         publicKOut.close();
         privateKOut.close();
     }
+    //checks if the keys are in the system
     public static boolean doKeysExists(){
         File[] files = new File[]{new File( privateKey ), new File( publicKey ), new File( privateKey1 ), new File( publicKey1 ) };
         return files[0].exists() && files[1].exists() && files[2].exists() && files[3].exists();
