@@ -6,14 +6,20 @@ import android.Manifest;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.os.*;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     final int Ver = Build.VERSION.SDK_INT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+        new RSA().generateKeys();
         todo();
         Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.btnAbout );
         a.setOnClickListener( this );
@@ -21,17 +27,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c.setOnClickListener( this );
     }
     private void todo() {
-        if(!RSA.doKeysExists()) {//checks if the keys exist in the system
-            try {
-                RSA.writeLoginKeys();
-                RSA.writeUserInfoKeys();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
         if(Ver > Build.VERSION_CODES.LOLLIPOP_MR1){
             if(!checkPermissions()){
                 requestPermissions();
+
             }
             else{
                 new showDialog( "IMPORTANT","Please grant the permissions first", Integer.parseInt( null ),null,null  ).show( getSupportFragmentManager(), "" );
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void requestPermissions(){
         //asks the users for the permissions which enables most of the functionality of this project
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+
     }
     private boolean checkPermissions(){
         //checks if the permissions are granted by the user
@@ -50,8 +51,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         else{
+
             return false;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new showDialog( "Do you want to exit", "Click Yes to exit or No to stay in the application",3, null,null ).show( getSupportFragmentManager(),"" );
     }
 
     @Override

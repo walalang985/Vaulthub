@@ -62,9 +62,15 @@ public class showDialog  extends DialogFragment {
                 dialog = new AlertDialog.Builder( getActivity() ).setTitle( head ).setMessage( msg ).setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        System.exit( 0 );
+                    }
+                } ).setNegativeButton( "No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 } ).create();
+                break;
             default:
                 throw new IllegalStateException( "Unexpected value: " + numBtn );
         }

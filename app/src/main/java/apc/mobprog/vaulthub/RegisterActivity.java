@@ -28,18 +28,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         register.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
-                    new showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first",1, null, null ).show( getSupportFragmentManager(),"" );
-                }
-
-                try {
-                    if(pass.getText().toString().length() < 6){
-                        new showDialog( "Notice", "Passwords should have at least 6 characters", 1, null,null ).show( getSupportFragmentManager(),"" );
+                    try {
+                        if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
+                            new showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first",1, null, null ).show( getSupportFragmentManager(),"" );
                     }else {
-                        ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey ) );
+                        RSA rsa = new RSA();
+                        ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPrivateLoginKeys() ) );
                         PrivateKey privateKey = (PrivateKey) ois.readObject();
+
                         if (db.getUserLoginCount() == 0) {
-                            db.insertUserLogin( RSA.encrypt( user.getText().toString(), privateKey ), RSA.encrypt( pass.getText().toString(), privateKey ) );
+                            db.insertUserLogin(new RSA(privateKey).encrypt( user.getText().toString() ), new RSA(privateKey).encrypt( pass.getText().toString() ));
                             startActivity( new Intent( getApplicationContext(), LoginFormActivity.class ) );
                         } else {
                             new showDialog( "Account Creation Failed", "Sorry only one account per device", 1, LoginFormActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );

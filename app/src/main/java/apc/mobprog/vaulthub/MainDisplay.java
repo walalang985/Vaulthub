@@ -55,16 +55,17 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
                     //reads the key from the local file created
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.publicKey1 ) );
-                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
+                    RSA rsa = new RSA();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPublicUserKeys() ) );
+                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys() ) );
                     PrivateKey privateKey = (PrivateKey) ois1.readObject();
                     PublicKey publicKey = (PublicKey) ois.readObject();
                     //gets the row from the database and encrypts the current selected item to match it in the database
-                    Cursor cursor = db.fetch( RSA.encrypt( spinner.getSelectedItem().toString(),privateKey  ) );
+                    Cursor cursor = db.fetch( new RSA(privateKey).encrypt( spinner.getSelectedItem().toString()) );
                     cursor.moveToFirst();//if the method .moveToFirst is not called it would cause an Exception called CursorIndexOutOfBoundsException
-                    user.setText( RSA.decrypt( cursor.getString( 1 ), publicKey ) );
-                    pass.setText( RSA.decrypt( cursor.getString( 2 ), publicKey ) );
-                    use.setText( RSA.decrypt( cursor.getString( 3 ), publicKey ) );
+                    user.setText( new RSA(publicKey).decrypt( cursor.getString( 1 )) );
+                    pass.setText( new RSA(publicKey).decrypt( cursor.getString( 2 )) );
+                    use.setText( new RSA(publicKey).decrypt( cursor.getString( 3 )) );
                 }catch (Exception e){
                     e.printStackTrace();
                 }

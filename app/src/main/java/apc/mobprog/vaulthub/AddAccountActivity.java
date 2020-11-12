@@ -26,14 +26,14 @@ public class AddAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
-                try {
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
+                try{
+                    RSA rsa = new RSA();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys() ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    //inserts the info to the database while encrypting it at the same time
-                    db.insertUserInfo( RSA.encrypt( user.getText().toString(), privateKey ), RSA.encrypt( pass.getText().toString(), privateKey ), RSA.encrypt( use.getText().toString(), privateKey) );
-                    //shows a dialog and returning the user to the MainDisplay.class after 1.5 seconds
-                    new showDialog( "Action Completed", "The account was added successfully", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
-                }catch (Exception e){
+                    db.insertUserInfo( new RSA(privateKey).encrypt( user.getText().toString() ), new RSA(privateKey).encrypt( pass.getText().toString() ),new RSA(privateKey).encrypt( use.getText().toString() ) );
+                    new showDialog(  "Action Completed", "The account was added successfully", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
+                }
+                catch (Exception e){
                     e.printStackTrace();
                 }
             }

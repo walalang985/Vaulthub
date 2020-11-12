@@ -1,7 +1,6 @@
 package apc.mobprog.vaulthub;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -36,16 +35,17 @@ public class UpdateAccountActivity extends AppCompatActivity{
                     username.setText( "" );
                     password.setText( "" );
                     usage.setText( "" );
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.publicKey1 ) );
-                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
+                    RSA rsa = new RSA();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPublicUserKeys() ) );
+                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys()) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
                     PrivateKey privateKey = (PrivateKey) ois1.readObject();
-                    Cursor cursor = db.fetch(RSA.encrypt( spinner.getSelectedItem().toString(), privateKey ));
+                    Cursor cursor = db.fetch(new RSA(privateKey).encrypt( spinner.getSelectedItem().toString()));
                     cursor.moveToFirst();
                     //automatically writes to the edittext while being editable
-                    username.append( RSA.decrypt( cursor.getString( 1 ), publicKey ) );
-                    password.append( RSA.decrypt( cursor.getString( 2 ), publicKey ) );
-                    usage.append( RSA.decrypt( cursor.getString( 3 ), publicKey ) );
+                    username.append( new RSA(publicKey).decrypt( cursor.getString( 1 ) ) );
+                    password.append( new RSA(publicKey).decrypt( cursor.getString( 2 ) ) );
+                    usage.append( new RSA(publicKey).decrypt( cursor.getString( 3 ) ) );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -57,12 +57,13 @@ public class UpdateAccountActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 try {
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.privateKey1 ) );
+                    RSA rsa = new RSA();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys() ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    db.updateInfo( RSA.encrypt( spinner.getSelectedItem().toString(), privateKey ),
-                                   RSA.encrypt( username.getText().toString(), privateKey ),
-                                   RSA.encrypt( password.getText().toString(), privateKey ),
-                                   RSA.encrypt( usage.getText().toString(), privateKey ));
+                    db.updateInfo( new RSA(privateKey).encrypt( spinner.getSelectedItem().toString() ),
+                                   new RSA(privateKey).encrypt( username.getText().toString() ),
+                                   new RSA(privateKey).encrypt( password.getText().toString() ),
+                                   new RSA(privateKey).encrypt( usage.getText().toString() ));
                     //shows a log and redirects the user back to the MainDisplay.class
                     new showDialog( "Action Complete", "Successfully updated the account",1 ,MainDisplay.class ,getApplicationContext()).show( getSupportFragmentManager(), "" );
                 }catch (Exception e){

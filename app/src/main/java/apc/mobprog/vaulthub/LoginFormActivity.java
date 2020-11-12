@@ -61,9 +61,10 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
                 }
                 try {
                     Cursor cursor = db.fetch( 1 );
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.publicKey ) );
+                    RSA rsa = new RSA();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPublicLoginKeys() ) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
-                    if (user.getText().toString().equals( RSA.decrypt( cursor.getString( 1 ), publicKey ) ) && pass.getText().toString().equals( RSA.decrypt( cursor.getString( 2 ), publicKey ) )) {
+                    if (user.getText().toString().equals( new RSA(publicKey).decrypt( cursor.getString( 1 )) ) && pass.getText().toString().equals( new RSA(publicKey).decrypt( cursor.getString( 2 )) )) {
                         startActivity( new Intent( getApplicationContext(), MainDisplay.class ).putExtra( "status", "1" ) );
                     } else {
                         new showDialog( "Login Failed", "Oops, the username or password does not match any data from our database",1, null, null ).show( getSupportFragmentManager(), "" );
@@ -76,7 +77,6 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
     }
     @Override
     public void onClick(View v) {
-        userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
         switch (v.getId()) {
             case R.id.cancelBtn:
                 startActivity( new Intent( getApplicationContext(), MainActivity.class ) );

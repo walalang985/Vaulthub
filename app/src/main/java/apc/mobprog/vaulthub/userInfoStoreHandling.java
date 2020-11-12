@@ -52,9 +52,10 @@ public class userInfoStoreHandling extends SQLiteOpenHelper{
         if(cursor.moveToFirst()){
             do{
                 try {
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( RSA.publicKey1 ) );
+                    RSA rsa = new RSA();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPublicUserKeys() ) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
-                    list.add( RSA.decrypt( cursor.getString( 1 ), publicKey ) );
+                    list.add( new RSA(publicKey).decrypt( cursor.getString( 1 ) ) );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
