@@ -15,7 +15,7 @@ public class RSA {
     String res;
     PrivateKey privKey;
     PublicKey pubKey;
-    final String dir = "/sdcard/Android/data/apc.mobprog.vaulthub/keySet1";
+    final String dir = "/sdcard/Android/data/apc.mobprog.vaulthub";
     final String[] privaKey = {dir + "/loginKeys/privateKey.key", dir + "/userKeys/privateKey.key"};
     final String[] publKey = {dir + "/loginKeys/publicKey.key", dir + "/userKeys/publicKey.key"};
     //constructor that uses the PrivateKey
