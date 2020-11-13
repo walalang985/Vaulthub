@@ -48,7 +48,7 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
                     userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
                     //deletes the account in the database
-                    db.deleteUserInfo( new RSA(privateKey).encrypt( selItem ) );
+                    db.deleteUserInfo( new Hex().getHexString( new RSA(privateKey).encrypt( selItem ) ) );
                     //shows a dialog and returns the user back to MainDisplay
                     new showDialog( "Action Complete", "Successfully deleted the account",1 , MainDisplay.class, getApplicationContext()).show( getSupportFragmentManager(), "" );
                 }catch (Exception e){

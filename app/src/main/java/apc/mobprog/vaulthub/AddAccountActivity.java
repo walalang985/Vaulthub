@@ -30,7 +30,7 @@ public class AddAccountActivity extends AppCompatActivity {
                     RSA rsa = new RSA();
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys() ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    db.insertUserInfo( new RSA(privateKey).encrypt( user.getText().toString() ), new RSA(privateKey).encrypt( pass.getText().toString() ),new RSA(privateKey).encrypt( use.getText().toString() ) );
+                    db.insertUserInfo( new Hex().getHexString( new RSA(privateKey).encrypt( user.getText().toString() ) ), new Hex().getHexString( new RSA(privateKey).encrypt( pass.getText().toString() ) ),new Hex().getHexString( new RSA(privateKey).encrypt( use.getText().toString() ) ) );
                     new showDialog(  "Action Completed", "The account was added successfully", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
                 }
                 catch (Exception e){

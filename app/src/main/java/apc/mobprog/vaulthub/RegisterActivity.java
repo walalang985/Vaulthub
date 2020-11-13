@@ -37,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         PrivateKey privateKey = (PrivateKey) ois.readObject();
 
                         if (db.getUserLoginCount() == 0) {
-                            db.insertUserLogin(new RSA(privateKey).encrypt( user.getText().toString() ), new RSA(privateKey).encrypt( pass.getText().toString() ));
+                            db.insertUserLogin(new Hex().getHexString( new RSA(privateKey).encrypt( user.getText().toString() ) ), new Hex().getHexString( new RSA(privateKey).encrypt( pass.getText().toString() ) ));
                             startActivity( new Intent( getApplicationContext(), LoginFormActivity.class ) );
                         } else {
                             new showDialog( "Account Creation Failed", "Sorry only one account per device", 1, LoginFormActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );

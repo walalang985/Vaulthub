@@ -64,7 +64,7 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
                     RSA rsa = new RSA();
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPublicLoginKeys() ) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
-                    if (user.getText().toString().equals( new RSA(publicKey).decrypt( cursor.getString( 1 )) ) && pass.getText().toString().equals( new RSA(publicKey).decrypt( cursor.getString( 2 )) )) {
+                    if (user.getText().toString().equals( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 1 ) )) ) && pass.getText().toString().equals( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 2 ) )) )) {
                         startActivity( new Intent( getApplicationContext(), MainDisplay.class ).putExtra( "status", "1" ) );
                     } else {
                         new showDialog( "Login Failed", "Oops, the username or password does not match any data from our database",1, null, null ).show( getSupportFragmentManager(), "" );

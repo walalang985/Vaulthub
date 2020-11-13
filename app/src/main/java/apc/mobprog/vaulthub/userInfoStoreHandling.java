@@ -55,7 +55,7 @@ public class userInfoStoreHandling extends SQLiteOpenHelper{
                     RSA rsa = new RSA();
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPublicUserKeys() ) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
-                    list.add( new RSA(publicKey).decrypt( cursor.getString( 1 ) ) );
+                    list.add( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 1 ) ) ) );
                 }catch (Exception e){
                     e.printStackTrace();
                 }

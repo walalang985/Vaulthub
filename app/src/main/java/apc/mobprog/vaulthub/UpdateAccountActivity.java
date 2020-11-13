@@ -40,12 +40,12 @@ public class UpdateAccountActivity extends AppCompatActivity{
                     ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys()) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
                     PrivateKey privateKey = (PrivateKey) ois1.readObject();
-                    Cursor cursor = db.fetch(new RSA(privateKey).encrypt( spinner.getSelectedItem().toString()));
+                    Cursor cursor = db.fetch(new Hex().getHexString( new RSA(privateKey).encrypt( spinner.getSelectedItem().toString()) ));
                     cursor.moveToFirst();
                     //automatically writes to the edittext while being editable
-                    username.append( new RSA(publicKey).decrypt( cursor.getString( 1 ) ) );
-                    password.append( new RSA(publicKey).decrypt( cursor.getString( 2 ) ) );
-                    usage.append( new RSA(publicKey).decrypt( cursor.getString( 3 ) ) );
+                    username.append( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 1 ) ) ) );
+                    password.append( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 2 ) ) ) );
+                    usage.append( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 3 ) ) ) );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -60,10 +60,8 @@ public class UpdateAccountActivity extends AppCompatActivity{
                     RSA rsa = new RSA();
                     ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys() ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    db.updateInfo( new RSA(privateKey).encrypt( spinner.getSelectedItem().toString() ),
-                                   new RSA(privateKey).encrypt( username.getText().toString() ),
-                                   new RSA(privateKey).encrypt( password.getText().toString() ),
-                                   new RSA(privateKey).encrypt( usage.getText().toString() ));
+                    db.updateInfo( new Hex().getHexString( new RSA(privateKey).encrypt( spinner.getSelectedItem().toString() ) ),
+                            new Hex().getHexString( new RSA(privateKey).encrypt( username.getText().toString() ) ), new Hex().getHexString( new RSA(privateKey).encrypt( password.getText().toString() ) ),new Hex().getHexString( new RSA(privateKey).encrypt( usage.getText().toString() ) ) );
                     //shows a log and redirects the user back to the MainDisplay.class
                     new showDialog( "Action Complete", "Successfully updated the account",1 ,MainDisplay.class ,getApplicationContext()).show( getSupportFragmentManager(), "" );
                 }catch (Exception e){

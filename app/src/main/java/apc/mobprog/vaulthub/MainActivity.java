@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(Ver > Build.VERSION_CODES.LOLLIPOP_MR1){
             if(!checkPermissions()){
                 requestPermissions();
-
             }
             else{
                 new showDialog( "IMPORTANT","Please grant the permissions first", Integer.parseInt( null ),null,null  ).show( getSupportFragmentManager(), "" );
@@ -42,7 +41,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void requestPermissions(){
         //asks the users for the permissions which enables most of the functionality of this project
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-
+        //wait for 500 milliseconds after requesting permissons to write user keys
+        new Handler().postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                new RSA().generateKeys();
+            }
+        },500 );
     }
     private boolean checkPermissions(){
         //checks if the permissions are granted by the user
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new showDialog( "Do you want to exit", "Click Yes to exit or No to stay in the application",3, null,null ).show( getSupportFragmentManager(),"" );
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity( new Intent(getApplicationContext(), LoginFormActivity.class) );
                 break;
             case R.id.btnAbout:
-                new showDialog("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords",1, null,null).show( getSupportFragmentManager(),"" );
+                new showDialog("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords",4, null,null).show( getSupportFragmentManager(),"" );
                 break;
         }
     }

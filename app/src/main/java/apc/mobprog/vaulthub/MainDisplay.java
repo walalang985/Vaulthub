@@ -61,11 +61,11 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
                     PrivateKey privateKey = (PrivateKey) ois1.readObject();
                     PublicKey publicKey = (PublicKey) ois.readObject();
                     //gets the row from the database and encrypts the current selected item to match it in the database
-                    Cursor cursor = db.fetch( new RSA(privateKey).encrypt( spinner.getSelectedItem().toString()) );
+                    Cursor cursor = db.fetch( new Hex().getHexString( new RSA(privateKey).encrypt( spinner.getSelectedItem().toString()) ) );
                     cursor.moveToFirst();//if the method .moveToFirst is not called it would cause an Exception called CursorIndexOutOfBoundsException
-                    user.setText( new RSA(publicKey).decrypt( cursor.getString( 1 )) );
-                    pass.setText( new RSA(publicKey).decrypt( cursor.getString( 2 )) );
-                    use.setText( new RSA(publicKey).decrypt( cursor.getString( 3 )) );
+                    user.setText( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 1 ) )) );
+                    pass.setText( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 2 ) )) );
+                    use.setText( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 3 ) )) );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
