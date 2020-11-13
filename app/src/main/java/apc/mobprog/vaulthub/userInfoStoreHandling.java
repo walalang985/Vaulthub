@@ -65,12 +65,6 @@ public class userInfoStoreHandling extends SQLiteOpenHelper{
         db.close();
         return list;
     }
-    public int getUserInfoCount(){
-        String query = "SELECT * FROM " + TBL_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery( query, null );
-        return c.getCount();
-    }
     public int deleteUserInfo(String prev){
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete( TBL_NAME, USER + " = ?", new String[]{prev} );

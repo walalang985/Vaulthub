@@ -13,10 +13,8 @@ public class Hex {
     public String getString(String text){
         String result = "";
         char[] a = text.toCharArray();
-
         for(int i = 0; i<a.length;i+=2) {
-            String st = ""+a[i] + "" + a[i+1];
-            char ch = (char) Integer.parseInt(st, 16);
+            char ch = (char) Integer.parseInt(""+a[i] + "" + a[i+1], 16);
             result = result+ch;
         }
         return result;
