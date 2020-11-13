@@ -25,13 +25,14 @@ public class AddAccountActivity extends AppCompatActivity {
         acc.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+                vaulthub.database.userInfo db = new vaulthub.database.userInfo( getApplicationContext() );
                 try{
-                    RSA rsa = new RSA();
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys() ) );
+                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
+                    vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.privaKey[1] ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    db.insertUserInfo( new Hex().getHexString( new RSA(privateKey).encrypt( user.getText().toString() ) ), new Hex().getHexString( new RSA(privateKey).encrypt( pass.getText().toString() ) ),new Hex().getHexString( new RSA(privateKey).encrypt( use.getText().toString() ) ) );
-                    new showDialog(  "Action Completed", "The account was added successfully", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
+                    db.insertUserInfo( hex.getHexString( rsa.encrypt( user.getText().toString(), privateKey ) ), hex.getHexString( rsa.encrypt( pass.getText().toString(), privateKey ) ), hex.getHexString( rsa.encrypt( use.getText().toString(), privateKey ) ) );
+                    new vaulthub.showDialog(  "Action Completed", "The account was added successfully", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -47,6 +48,6 @@ public class AddAccountActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        new showDialog("Invalid Action","The action you are trying to do is invalid", 1, null,null).show( getSupportFragmentManager(), "" );
+        new vaulthub.showDialog("Invalid Action","The action you are trying to do is invalid", 1, null,null).show( getSupportFragmentManager(), "" );
     }
 }

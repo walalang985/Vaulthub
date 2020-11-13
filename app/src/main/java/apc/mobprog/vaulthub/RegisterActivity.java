@@ -20,8 +20,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         Button cancel = findViewById( R.id.cancelBtn ), register = findViewById( R.id.registerBtn );
         final EditText user = findViewById( R.id.txtUsername ),pass = findViewById( R.id.txtPassword );
         final TextView userLabel = findViewById( R.id.user ), passLabel = findViewById( R.id.pass );
-        final userLoginCredentialsHandling db = new userLoginCredentialsHandling( getApplicationContext() );
-
+        final vaulthub.database.userLogin db = new vaulthub.database.userLogin(getApplicationContext());
         userLabel.setVisibility( View.VISIBLE );
         passLabel.setVisibility( View.VISIBLE );
         cancel.setOnClickListener(this);
@@ -30,17 +29,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(View v) {
                     try {
                         if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
-                            new showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first",1, null, null ).show( getSupportFragmentManager(),"" );
+                            new vaulthub.showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first",1, null, null ).show( getSupportFragmentManager(),"" );
                     }else {
-                        RSA rsa = new RSA();
-                        ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPrivateLoginKeys() ) );
+                        vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
+                        vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
+                        ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.privaKey[0] ) );
                         PrivateKey privateKey = (PrivateKey) ois.readObject();
 
                         if (db.getUserLoginCount() == 0) {
-                            db.insertUserLogin(new Hex().getHexString( new RSA(privateKey).encrypt( user.getText().toString() ) ), new Hex().getHexString( new RSA(privateKey).encrypt( pass.getText().toString() ) ));
+                            db.insertUserLogin( hex.getHexString( rsa.encrypt( user.getText().toString(),privateKey ) ), hex.getHexString( rsa.encrypt( pass.getText().toString(), privateKey ) ) );
                             startActivity( new Intent( getApplicationContext(), LoginFormActivity.class ) );
                         } else {
-                            new showDialog( "Account Creation Failed", "Sorry only one account per device", 1, LoginFormActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
+                            new vaulthub.showDialog( "Account Creation Failed", "Sorry only one account per device", 1, LoginFormActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
                         }
                     }
                 } catch (Exception e) {

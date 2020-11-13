@@ -23,7 +23,7 @@ public class UpdateAccountActivity extends AppCompatActivity{
         final Spinner spinner = findViewById( R.id.userAccContainer );
         Button cancel = findViewById( R.id.cancel ), update = findViewById( R.id.update );
         cancel.setOnClickListener( cancelClicked );
-        final userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+        final vaulthub.database.userInfo db = new vaulthub.database.userInfo( getApplicationContext() );
         List<String> userr = db.getSpinnerItems();//loads the items from the database
         ArrayAdapter<String> adapter = new ArrayAdapter<>( this, R.layout.support_simple_spinner_dropdown_item,userr );
         spinner.setAdapter( adapter );
@@ -35,17 +35,18 @@ public class UpdateAccountActivity extends AppCompatActivity{
                     username.setText( "" );
                     password.setText( "" );
                     usage.setText( "" );
-                    RSA rsa = new RSA();
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPublicUserKeys() ) );
-                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys()) );
+                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
+                    vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.publKey[1] ) );
+                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( rsa.privaKey[1] ) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
                     PrivateKey privateKey = (PrivateKey) ois1.readObject();
-                    Cursor cursor = db.fetch(new Hex().getHexString( new RSA(privateKey).encrypt( spinner.getSelectedItem().toString()) ));
+                    Cursor cursor = db.fetch( hex.getHexString( rsa.encrypt( spinner.getSelectedItem().toString(), privateKey ) ) );
                     cursor.moveToFirst();
-                    //automatically writes to the edittext while being editable
-                    username.append( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 1 ) ) ) );
-                    password.append( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 2 ) ) ) );
-                    usage.append( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 3 ) ) ) );
+                    //qppends to the edittext
+                    username.append( rsa.decrypt( hex.getString( cursor.getString( 1 ) ), publicKey ) );
+                    password.append( rsa.decrypt( hex.getString( cursor.getString( 2 ) ), publicKey ) );
+                    usage.append( rsa.decrypt( hex.getString( cursor.getString( 3 ) ), publicKey ) );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -57,13 +58,17 @@ public class UpdateAccountActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 try {
-                    RSA rsa = new RSA();
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys() ) );
+                    vaulthub.showDialog dialog = new vaulthub.showDialog( "Action Complete", "Successfully updated the account",1 ,MainDisplay.class ,getApplicationContext() );
+                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
+                    vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.privaKey[1] ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    db.updateInfo( new Hex().getHexString( new RSA(privateKey).encrypt( spinner.getSelectedItem().toString() ) ),
-                            new Hex().getHexString( new RSA(privateKey).encrypt( username.getText().toString() ) ), new Hex().getHexString( new RSA(privateKey).encrypt( password.getText().toString() ) ),new Hex().getHexString( new RSA(privateKey).encrypt( usage.getText().toString() ) ) );
-                    //shows a log and redirects the user back to the MainDisplay.class
-                    new showDialog( "Action Complete", "Successfully updated the account",1 ,MainDisplay.class ,getApplicationContext()).show( getSupportFragmentManager(), "" );
+                    db.updateInfo(
+                            hex.getHexString( rsa.encrypt( spinner.getSelectedItem().toString(), privateKey ) ),
+                            hex.getHexString( rsa.encrypt( username.getText().toString(), privateKey ) ),
+                            hex.getHexString( rsa.encrypt( password.getText().toString(), privateKey ) ),
+                            hex.getHexString( rsa.encrypt( usage.getText().toString(), privateKey ) ) );
+                    dialog.show( getSupportFragmentManager(),"" );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -80,6 +85,6 @@ public class UpdateAccountActivity extends AppCompatActivity{
     //disables the back press
     @Override
     public void onBackPressed() {
-        new showDialog("Invalid Action","The action you are trying to do is invalid",1, null, null).show( getSupportFragmentManager(), "" );//show a dialog about invalid action of some sort
+        new vaulthub.showDialog("Invalid Action","The action you are trying to do is invalid",1, null, null).show( getSupportFragmentManager(), "" );//show a dialog about invalid action of some sort
     }
 }

@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-        new RSA().generateKeys();
+        new vaulthub.crypt.RSA().generateKeys();
         todo();
         Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.btnAbout );
         a.setOnClickListener( this );
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 requestPermissions();
             }
             else{
-                new showDialog( "IMPORTANT","Please grant the permissions first", Integer.parseInt( null ),null,null  ).show( getSupportFragmentManager(), "" );
+                new vaulthub.showDialog( "IMPORTANT","Please grant the permissions first", Integer.parseInt( null ),null,null  ).show( getSupportFragmentManager(), "" );
                 System.exit( 0 );
             }
         }
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Handler().postDelayed( new Runnable() {
             @Override
             public void run() {
-                new RSA().generateKeys();
+                new vaulthub.crypt.RSA().generateKeys();
             }
         },500 );
     }
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        new showDialog( "Do you want to exit", "Click Yes to exit or No to stay in the application",3, null,null ).show( getSupportFragmentManager(),"" );
+        new vaulthub.showDialog( "Do you want to exit", "Click Yes to exit or No to stay in the application",3, null,null ).show( getSupportFragmentManager(),"" );
     }
 
 
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity( new Intent(getApplicationContext(), LoginFormActivity.class) );
                 break;
             case R.id.btnAbout:
-                new showDialog("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords",4, null,null).show( getSupportFragmentManager(),"" );
+                new vaulthub.showDialog("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords",4, null,null).show( getSupportFragmentManager(),"" );
                 break;
         }
     }

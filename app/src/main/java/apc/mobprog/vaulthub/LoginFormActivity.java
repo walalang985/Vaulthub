@@ -15,13 +15,13 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_login_form );
-        final userLoginCredentialsHandling db = new userLoginCredentialsHandling( getApplicationContext() );
+        final vaulthub.database.userLogin db = new vaulthub.database.userLogin( getApplicationContext() );
         Button cancel = findViewById( R.id.cancelBtn ), login = findViewById( R.id.loginBtn );
         final EditText user = findViewById( R.id.txtUsername ), pass = findViewById( R.id.txtPassword );
         final TextView userLabel = findViewById( R.id.user ), passLabel = findViewById( R.id.pass );
         if(!db.dbExists( getApplicationContext() )){
             //redirects the account if the database is not yet present in the file system
-            new showDialog( "No Accounts","No accounts have been made yet.",1, RegisterActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
+            new vaulthub.showDialog( "No Accounts","No accounts have been made yet.",1, RegisterActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
         }
         user.addTextChangedListener( new TextWatcher() {
             @Override
@@ -57,18 +57,21 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
 
                 if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
-                    new showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first", 1, null, null ).show( getSupportFragmentManager(),"" );
+                    new vaulthub.showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first", 3, null, null ).show( getSupportFragmentManager(),"" );
                 }
                 try {
+                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
+                    vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
                     Cursor cursor = db.fetch( 1 );
-                    RSA rsa = new RSA();
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPublicLoginKeys() ) );
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.publKey[0] ) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
-                    if (user.getText().toString().equals( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 1 ) )) ) && pass.getText().toString().equals( new RSA(publicKey).decrypt( new Hex().getString( cursor.getString( 2 ) )) )) {
-                        startActivity( new Intent( getApplicationContext(), MainDisplay.class ).putExtra( "status", "1" ) );
-                    } else {
-                        new showDialog( "Login Failed", "Oops, the username or password does not match any data from our database",1, null, null ).show( getSupportFragmentManager(), "" );
+                    if(user.getText().toString().equals( rsa.decrypt( hex.getString( cursor.getString( 1 ) ),publicKey ) )&&pass.getText().toString().equals( rsa.decrypt( hex.getString( cursor.getString( 2 ) ),publicKey ) )){
+                        new vaulthub.showDialog( "Success", "Login success", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(),"" );
                     }
+                    else{
+                        new vaulthub.showDialog( "Login Failed", "Oops, the username or password does not match any data from our database",3, null, null ).show( getSupportFragmentManager(),"" );
+                    }
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }

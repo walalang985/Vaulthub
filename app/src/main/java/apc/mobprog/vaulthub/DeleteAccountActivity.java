@@ -23,7 +23,7 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_delete_account );
-        userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+        vaulthub.database.userInfo db = new vaulthub.database.userInfo( getApplicationContext() );
         final Spinner spinner = findViewById( R.id.spins );
         Button deleteBtn = findViewById( R.id.del ), returner = findViewById( R.id.ret );
         List<String> list = db.getSpinnerItems();
@@ -35,7 +35,7 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
     }
     @Override
     public void onBackPressed() {
-        new showDialog("Invalid Action","The action you are trying to do is invalid", 1,null,null).show( getSupportFragmentManager(), "" );
+        new vaulthub.showDialog("Invalid Action","The action you are trying to do is invalid", 1,null,null).show( getSupportFragmentManager(), "" );
     }
 
     @Override
@@ -43,20 +43,22 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
         switch (v.getId()){
             case R.id.del:
                 try{
-                    RSA rsa = new RSA();
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPrivateUserKeys() ) );
+                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
+                    vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.privaKey[1] ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    userInfoStoreHandling db = new userInfoStoreHandling( getApplicationContext() );
+                    vaulthub.database.userInfo db = new vaulthub.database.userInfo( getApplicationContext() );
+                    db.deleteUserInfo( hex.getHexString( rsa.encrypt( selItem,privateKey ) ) );
                     //deletes the account in the database
-                    db.deleteUserInfo( new Hex().getHexString( new RSA(privateKey).encrypt( selItem ) ) );
+                    //db.deleteUserInfo( new Hex().getHexString( new RSA(privateKey).encrypt( selItem ) ) );
                     //shows a dialog and returns the user back to MainDisplay
-                    new showDialog( "Action Complete", "Successfully deleted the account",1 , MainDisplay.class, getApplicationContext()).show( getSupportFragmentManager(), "" );
+                    new vaulthub.showDialog( "Action Complete", "Successfully deleted the account",1 , MainDisplay.class, getApplicationContext()).show( getSupportFragmentManager(), "" );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
                 break;
             case R.id.ret:
-                new showDialog( "Action Not Performed", "Returning you now", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
+                new vaulthub.showDialog( "Action Not Performed", "Returning you now", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
                 break;
         }
     }
