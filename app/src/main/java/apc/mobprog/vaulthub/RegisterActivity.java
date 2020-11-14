@@ -31,13 +31,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (user.getText().toString().isEmpty() || pass.getText().toString().isEmpty()) {
                             new vaulthub.showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first",1, null, null ).show( getSupportFragmentManager(),"" );
                     }else {
-                        vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
                         vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
-                        ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.privaKey[0] ) );
+                        ObjectInputStream ois = new ObjectInputStream( new FileInputStream( vaulthub.getDirs.getLoginPrivateKey ) );
                         PrivateKey privateKey = (PrivateKey) ois.readObject();
-
+                        vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA(privateKey);
                         if (db.getUserLoginCount() == 0) {
-                            db.insertUserLogin( hex.getHexString( rsa.encrypt( user.getText().toString(),privateKey ) ), hex.getHexString( rsa.encrypt( pass.getText().toString(), privateKey ) ) );
+                            db.insertUserLogin( hex.getHexString( rsa.encrypt( user.getText().toString( ) ) ), hex.getHexString( rsa.encrypt( pass.getText().toString() ) ));
                             startActivity( new Intent( getApplicationContext(), LoginFormActivity.class ) );
                         } else {
                             new vaulthub.showDialog( "Account Creation Failed", "Sorry only one account per device", 1, LoginFormActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );

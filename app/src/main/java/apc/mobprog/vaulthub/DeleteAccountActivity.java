@@ -29,7 +29,12 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
         List<String> list = db.getSpinnerItems();
         ArrayAdapter<String> adapter = new ArrayAdapter<>( this, R.layout.support_simple_spinner_dropdown_item, list );
         spinner.setAdapter( adapter );
-        selItem = spinner.getSelectedItem().toString();
+        if(db.getUserInfoCount() == 0){
+            selItem = "";
+        }else{
+            selItem = spinner.getSelectedItem().toString();
+        }
+
         deleteBtn.setOnClickListener( this );
         returner.setOnClickListener( this );
     }
@@ -43,12 +48,12 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
         switch (v.getId()){
             case R.id.del:
                 try{
-                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
                     vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.privaKey[1] ) );
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( vaulthub.getDirs.getUserPrivateKey ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
+                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA(privateKey);
                     vaulthub.database.userInfo db = new vaulthub.database.userInfo( getApplicationContext() );
-                    db.deleteUserInfo( hex.getHexString( rsa.encrypt( selItem,privateKey ) ) );
+                    db.deleteUserInfo( hex.getHexString( rsa.encrypt( selItem ) ) );
                     //deletes the account in the database
                     //db.deleteUserInfo( new Hex().getHexString( new RSA(privateKey).encrypt( selItem ) ) );
                     //shows a dialog and returns the user back to MainDisplay

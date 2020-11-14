@@ -60,12 +60,13 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
                     new vaulthub.showDialog( "Empty fields","Oops, one of the fields is empty please fill it up first", 3, null, null ).show( getSupportFragmentManager(),"" );
                 }
                 try {
-                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
+
                     vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
                     Cursor cursor = db.fetch( 1 );
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.publKey[0] ) );
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( vaulthub.getDirs.getLoginPublicKeydir ) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
-                    if(user.getText().toString().equals( rsa.decrypt( hex.getString( cursor.getString( 1 ) ),publicKey ) )&&pass.getText().toString().equals( rsa.decrypt( hex.getString( cursor.getString( 2 ) ),publicKey ) )){
+                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA(publicKey);
+                    if(user.getText().toString().equals( rsa.decrypt( hex.getString( cursor.getString( 1 ) ) ) )&&pass.getText().toString().equals( rsa.decrypt( hex.getString( cursor.getString( 2 ) ) ) )){
                         new vaulthub.showDialog( "Success", "Login success", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(),"" );
                     }
                     else{

@@ -4,145 +4,235 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".MainDisplay">
-
-    <Button
-        android:id="@+id/addAcc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/add_account"
-        app:layout_constraintBottom_toTopOf="@+id/updateBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.863"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="108dp"
-        android:text="@string/remove_account"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.879"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/setPassVisibility"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="14dp"
-        android:text="Show"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.392"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.603"
+        android:layout_marginEnd="49dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/show"
+        app:layout_constraintBottom_toTopOf="@+id/pw"
+        app:layout_constraintEnd_toEndOf="@+id/pw"
         tools:ignore="HardcodedText" />
-
-    <Button
-        android:id="@+id/updateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="@string/update_account"
-        app:layout_constraintBottom_toTopOf="@+id/delete"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.876"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/spinner2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="11dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.015"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.015" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/pw"
-        android:layout_width="wrap_content"
+        android:layout_width="475dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="244dp"
+        android:layout_marginEnd="256dp"
+        android:layout_marginBottom="127dp"
         android:background="@null"
         android:backgroundTint="#FFFFFF"
-        android:inputType="textPassword"
         android:password="true"
+        android:textAlignment="textStart"
         android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.023"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="Deprecated,TextViewEdits" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="87dp"
+        android:layout_marginEnd="581dp"
+        android:layout_marginBottom="284dp"
         android:text="@string/username"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.189" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/un"
-        android:layout_width="wrap_content"
+        android:layout_width="475dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="256dp"
+        android:layout_marginBottom="223dp"
+        android:textAlignment="textStart"
         android:textSize="30sp"
-        app:layout_constraintEnd_toStartOf="@+id/textView6"
-        app:layout_constraintHorizontal_bias="0.083"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="194dp"
+        android:layout_marginEnd="585dp"
+        android:layout_marginBottom="177dp"
         android:text="@string/password"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.443" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="296dp"
+        android:layout_marginEnd="633dp"
+        android:layout_marginBottom="75dp"
         android:text="@string/usage"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.754" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/us"
+        android:layout_width="475dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="355dp"
+        android:layout_marginEnd="256dp"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="textStart"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/labelChg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="276dp"
-        android:textSize="30sp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="55dp"
+        android:text="@string/change_password"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/changeLogin"
+        app:layout_constraintTop_toTopOf="@+id/changeLogin" />
+
+    <TextView
+        android:id="@+id/labelAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="60dp"
+        android:labelFor="@id/addAccount"
+        android:text="@string/add_account"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/addAccount"
+        app:layout_constraintTop_toTopOf="@+id/addAccount" />
+
+    <TextView
+        android:id="@+id/labelUpd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:labelFor="@id/updateAccount"
+        android:text="@string/update_account"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/updateAccount"
+        app:layout_constraintTop_toTopOf="@+id/updateAccount" />
+
+    <TextView
+        android:id="@+id/labelDel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:labelFor="@id/deleteAccount"
+        android:text="@string/delete_account"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/labelChg"
+        app:layout_constraintStart_toStartOf="@+id/labelUpd"
+        app:layout_constraintTop_toTopOf="@+id/deleteAccount" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/updateAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:backgroundTint="#FFFFFF"
+        app:elevation="0dp"
+        app:layout_constraintStart_toStartOf="@+id/deleteAccount"
+        app:layout_constraintTop_toBottomOf="@+id/deleteAccount"
+        app:srcCompat="@drawable/update"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:backgroundTint="#FFFFFF"
+        app:elevation="0dp"
+        app:fabSize="normal"
+        app:layout_constraintStart_toStartOf="@+id/updateAccount"
+        app:layout_constraintTop_toBottomOf="@+id/updateAccount"
+        app:srcCompat="@drawable/add"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deleteAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:backgroundTint="#FFFFFF"
+        app:elevation="0dp"
+        app:layout_constraintStart_toStartOf="@+id/changeLogin"
+        app:layout_constraintTop_toBottomOf="@+id/changeLogin"
+        app:srcCompat="@drawable/delete"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/changeLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="244dp"
+        android:clickable="true"
+        app:backgroundTint="#FFFFFF"
+        app:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.031"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:srcCompat="@drawable/change_password"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/userAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="387dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        app:backgroundTint="#FFFFFF"
+        app:elevation="0dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/user"
+        tools:ignore="ContentDescription" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,11 +27,11 @@ public class AddAccountActivity extends AppCompatActivity {
             public void onClick(View v) {
                 vaulthub.database.userInfo db = new vaulthub.database.userInfo( getApplicationContext() );
                 try{
-                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
                     vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.privaKey[1] ) );
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( vaulthub.getDirs.getUserPrivateKey ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    db.insertUserInfo( hex.getHexString( rsa.encrypt( user.getText().toString(), privateKey ) ), hex.getHexString( rsa.encrypt( pass.getText().toString(), privateKey ) ), hex.getHexString( rsa.encrypt( use.getText().toString(), privateKey ) ) );
+                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA(privateKey);
+                    db.insertUserInfo( hex.getHexString( rsa.encrypt( user.getText().toString() ) ), hex.getHexString( rsa.encrypt( pass.getText().toString() ) ), hex.getHexString( rsa.encrypt( use.getText().toString() ) ) );
                     new vaulthub.showDialog(  "Action Completed", "The account was added successfully", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
                 }
                 catch (Exception e){

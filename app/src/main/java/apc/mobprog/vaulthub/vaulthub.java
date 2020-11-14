@@ -63,6 +63,12 @@ public class vaulthub {
                 db.insert( TBL_NAME, null, cv );
                 db.close();
             }
+            public int getUserInfoCount(){
+                String query = "SELECT * FROM " + TBL_NAME;
+                SQLiteDatabase db = this.getReadableDatabase();
+                Cursor cursor = db.rawQuery( query, null );
+                return cursor.getCount();
+            }
             public List<String> getSpinnerItems(){
                 List<String> list = new ArrayList<String>();
                 String selectQuery = "SELECT  * FROM " + TBL_NAME;
@@ -71,11 +77,11 @@ public class vaulthub {
                 if(cursor.moveToFirst()){
                     do{
                         try {
-                            crypt.RSA rsa = new crypt.RSA();
                             crypt.Hex hex = new crypt.Hex();
-                            ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.publKey[1] ) );
+                            ObjectInputStream ois = new ObjectInputStream( new FileInputStream( getDirs.getUserPublicKey ) );
                             PublicKey publicKey = (PublicKey) ois.readObject();
-                            list.add( rsa.decrypt( hex.getString( cursor.getString( 1 ) ), publicKey ) );
+                            crypt.RSA rsa = new crypt.RSA(publicKey);
+                            list.add( rsa.decrypt( hex.getString( cursor.getString( 1 ) ) ) );
                             /*
                             RSA rsa = new RSA();
                             ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.getPublicUserKeys() ) );
@@ -152,6 +158,17 @@ public class vaulthub {
                 }
                 return cursor;
             }
+            public int update( String user, String pass){
+                SQLiteDatabase db = this.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put( USER, user );
+                cv.put( PASS, pass );
+                return db.update( TBL_NAME, cv, ID + " = ?", new String[]{"1"} );
+            }
+            public void deleteDB(){
+                SQLiteDatabase db = this.getWritableDatabase();
+                db.execSQL( "DROP TABLE IF EXISTS " + TBL_NAME );
+            }
             public boolean dbExists(Context context){
                 File file = context.getDatabasePath( DB_NAME );
                 return file.exists();
@@ -159,11 +176,21 @@ public class vaulthub {
         }
     }
     public static class crypt{
+
         static class RSA{
-            public String dir = "/sdcard/Android/data/apc.mobprog.vaulthub";
-            public String[] privaKey = {dir + "/loginKeys/privateKey.key", dir + "/userKeys/privateKey.key"};
-            public String[] publKey = {dir + "/loginKeys/publicKey.key", dir + "/userKeys/publicKey.key"};
-            public String encrypt(@NonNull String text, @NonNull PrivateKey privKey){
+            PublicKey pubKey;
+            PrivateKey privKey;
+            public RSA(PublicKey publicKey){
+                this.pubKey = publicKey;
+            }
+            public RSA(PrivateKey privateKey){
+                this.privKey = privateKey;
+            }
+            public RSA(){}
+            private String dir = "/sdcard/Android/data/apc.mobprog.vaulthub";
+            private String[] privaKey = {dir + "/loginKeys/privateKey.key", dir + "/userKeys/privateKey.key"};
+            private String[] publKey = {dir + "/loginKeys/publicKey.key", dir + "/userKeys/publicKey.key"};
+            public String encrypt(@NonNull String text){
                 String res = "";
                 try{
                     Cipher cipher = Cipher.getInstance( "RSA" );
@@ -174,7 +201,7 @@ public class vaulthub {
                 }
                 return res;
             }
-            public String decrypt(@NonNull String text, @NonNull PublicKey pubKey){
+            public String decrypt(@NonNull String text){
                 String res = "";
                 try{
                     Cipher cipher = Cipher.getInstance( "RSA" );
@@ -219,6 +246,8 @@ public class vaulthub {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
+                }else{
+                    return;
                 }
             }
             public boolean doKeysExists(){
@@ -249,7 +278,7 @@ public class vaulthub {
     }
     //a static class with a constructor
     public static class showDialog extends DialogFragment{
-        @Nullable String head, msg;
+        @NonNull String head, msg;
         int numBtn;
         @Nullable Class aClass;
         @Nullable Context context;
@@ -320,5 +349,12 @@ public class vaulthub {
             }
             return dialog;
         }
+    }
+    public static class getDirs{
+        private static final String dir = "/sdcard/Android/data/apc.mobprog.vaulthub";
+        public static final String getUserPublicKey = dir + "/userKeys/publicKey.key";
+        public static final String getUserPrivateKey = dir + "/userKeys/privateKey.key";
+        public static final String getLoginPublicKeydir = dir + "/loginKeys/publicKey.key";
+        public static final String getLoginPrivateKey = dir + "/loginKeys/privateKey.key";
     }
 }

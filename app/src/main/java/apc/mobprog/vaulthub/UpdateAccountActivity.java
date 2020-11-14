@@ -35,18 +35,20 @@ public class UpdateAccountActivity extends AppCompatActivity{
                     username.setText( "" );
                     password.setText( "" );
                     usage.setText( "" );
-                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
                     vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.publKey[1] ) );
-                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( rsa.privaKey[1] ) );
+                    //reads the private and public rsa keys
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( vaulthub.getDirs.getUserPublicKey ) );
+                    ObjectInputStream ois1 = new ObjectInputStream( new FileInputStream( vaulthub.getDirs.getUserPrivateKey ) );
                     PublicKey publicKey = (PublicKey) ois.readObject();
                     PrivateKey privateKey = (PrivateKey) ois1.readObject();
-                    Cursor cursor = db.fetch( hex.getHexString( rsa.encrypt( spinner.getSelectedItem().toString(), privateKey ) ) );
+                    vaulthub.crypt.RSA RSAencrypt = new vaulthub.crypt.RSA(privateKey);
+                    vaulthub.crypt.RSA RSAdecrypt = new vaulthub.crypt.RSA(publicKey);
+                    Cursor cursor = db.fetch( hex.getHexString( RSAencrypt.encrypt( spinner.getSelectedItem().toString() ) ) );
                     cursor.moveToFirst();
                     //qppends to the edittext
-                    username.append( rsa.decrypt( hex.getString( cursor.getString( 1 ) ), publicKey ) );
-                    password.append( rsa.decrypt( hex.getString( cursor.getString( 2 ) ), publicKey ) );
-                    usage.append( rsa.decrypt( hex.getString( cursor.getString( 3 ) ), publicKey ) );
+                    username.append( RSAdecrypt.decrypt( hex.getString( cursor.getString( 1 ) ) ) );
+                    password.append( RSAdecrypt.decrypt( hex.getString( cursor.getString( 2 ) ) ) );
+                    usage.append( RSAdecrypt.decrypt( hex.getString( cursor.getString( 3 ) ) ) );
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -59,15 +61,15 @@ public class UpdateAccountActivity extends AppCompatActivity{
             public void onClick(View v) {
                 try {
                     vaulthub.showDialog dialog = new vaulthub.showDialog( "Action Complete", "Successfully updated the account",1 ,MainDisplay.class ,getApplicationContext() );
-                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA();
                     vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( rsa.privaKey[1] ) );
+                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( vaulthub.getDirs.getUserPrivateKey ) );
                     PrivateKey privateKey = (PrivateKey) ois.readObject();
+                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA(privateKey);
                     db.updateInfo(
-                            hex.getHexString( rsa.encrypt( spinner.getSelectedItem().toString(), privateKey ) ),
-                            hex.getHexString( rsa.encrypt( username.getText().toString(), privateKey ) ),
-                            hex.getHexString( rsa.encrypt( password.getText().toString(), privateKey ) ),
-                            hex.getHexString( rsa.encrypt( usage.getText().toString(), privateKey ) ) );
+                            hex.getHexString( rsa.encrypt( spinner.getSelectedItem().toString() ) ),
+                            hex.getHexString( rsa.encrypt( username.getText().toString() ) ),
+                            hex.getHexString( rsa.encrypt( password.getText().toString() ) ),
+                            hex.getHexString( rsa.encrypt( usage.getText().toString() ) ) );
                     dialog.show( getSupportFragmentManager(),"" );
                 }catch (Exception e){
                     e.printStackTrace();

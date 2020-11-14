@@ -41,13 +41,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void requestPermissions(){
         //asks the users for the permissions which enables most of the functionality of this project
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-        //wait for 500 milliseconds after requesting permissons to write user keys
+        //wait for 100 milliseconds after requesting permissons to write user keys
         new Handler().postDelayed( new Runnable() {
             @Override
             public void run() {
                 new vaulthub.crypt.RSA().generateKeys();
             }
-        },500 );
+        },100 );
     }
     private boolean checkPermissions(){
         //checks if the permissions are granted by the user

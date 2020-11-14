@@ -40,7 +40,7 @@
     <string name="usage">Usage</string>
     <string name="add_account">Add Account</string>
     <string name="remove_account">Remove Account</string>
-    <string name="update_account">update account</string>
+    <string name="update_account">Update account</string>
     <string name="delete_account">Delete Account</string>
     <string name="returnn">Return</string>
     <string name="github">Github</string>
@@ -48,4 +48,8 @@
     <string name="vaulthub">VAULTHUB</string>
     <string name="show">Show</string>
     <string name="hide">Hide</string>
+    <string name="change_password">Change Password</string>
+    <string name="update">Update</string>
+    <string name="enter_your_password_to_confirm_deletion_of_account">Enter your password to confirm deletion of account</string>
+    <string name="delete_login">Delete Login</string>
 </resources>
