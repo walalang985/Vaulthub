@@ -43,6 +43,7 @@ public class UpdateLoginActivity extends AppCompatActivity {
                     vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA( privateKey );
                     vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
                     db.update( hex.getHexString( rsa.encrypt( user.getText().toString() ) ), hex.getHexString( rsa.encrypt( pass.getText().toString() ) ) );
+                    new vaulthub.showDialog( "Success", "Account updated successfully", 1, MainDisplay.class, getApplicationContext() );
                 }catch (Exception e){
                     e.printStackTrace();//to check at which part of the program it broke
                 }

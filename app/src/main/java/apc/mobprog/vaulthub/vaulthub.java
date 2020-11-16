@@ -10,11 +10,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.KeyPair;
@@ -187,9 +191,7 @@ public class vaulthub {
                 this.privKey = privateKey;
             }
             public RSA(){}
-            private String dir = "/sdcard/Android/data/apc.mobprog.vaulthub";
-            private String[] privaKey = {dir + "/loginKeys/privateKey.key", dir + "/userKeys/privateKey.key"};
-            private String[] publKey = {dir + "/loginKeys/publicKey.key", dir + "/userKeys/publicKey.key"};
+
             public String encrypt(@NonNull String text){
                 String res = "";
                 try{
@@ -212,48 +214,7 @@ public class vaulthub {
                 }
                 return res;
             }
-            public void generateKeys(){
-                if(!this.doKeysExists()){
-                    try{
-                        KeyPairGenerator keygen0 = KeyPairGenerator.getInstance( "RSA" );
-                        KeyPairGenerator keygen1 = KeyPairGenerator.getInstance( "RSA" );
-                        keygen0.initialize(2048);
-                        keygen1.initialize(2048);
-                        KeyPair kp0 = keygen0.generateKeyPair();
-                        KeyPair kp1 = keygen1.generateKeyPair();
-                        File[] files = {new File( privaKey[0] ), new File( privaKey[1] ), new File( publKey[0] ), new File( publKey[1] )};
-                        if(files[0]!=null && files[1]!=null&&files[2]!=null&&files[3]!=null){
-                            for(int i = 0; i < files.length;i++){
-                                files[i].getParentFile().mkdirs();
-                            }
-                        }
-                        for (int i = 0; i < files.length;i++){
-                            files[i].createNewFile();
-                        }
-                        ObjectOutputStream pub1,pub2,priv1,priv2;
-                        priv1 = new ObjectOutputStream( new FileOutputStream( files[0] ) );
-                        pub1 = new ObjectOutputStream( new FileOutputStream( files[2] ) );
-                        priv2 = new ObjectOutputStream( new FileOutputStream( files[1] ) );
-                        pub2 = new ObjectOutputStream( new FileOutputStream( files[3] ) );
-                        priv1.writeObject( kp0.getPrivate() );
-                        pub1.writeObject( kp0.getPublic() );
-                        priv2.writeObject( kp1.getPrivate() );
-                        pub2.writeObject( kp1.getPublic() );
-                        pub1.close();
-                        priv1.close();
-                        pub2.close();
-                        priv2.close();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }else{
-                    return;
-                }
-            }
-            public boolean doKeysExists(){
-                File[] files = {new File( privaKey[0] ), new File( privaKey[1] ), new File( publKey[0] ), new File( publKey[1] )};
-                return files[0].exists() && files[1].exists() && files[2].exists() && files[3].exists();
-            }
+
         }
         static class Hex{
             public Hex(){}
@@ -320,6 +281,7 @@ public class vaulthub {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            Log.d("tag", String.valueOf( which ));
                         }
                     } ).create();
                     break;
@@ -351,10 +313,11 @@ public class vaulthub {
         }
     }
     public static class getDirs{
-        private static final String dir = "/sdcard/Android/data/apc.mobprog.vaulthub";
+        private static final String dir = Environment.getExternalStorageDirectory().getPath() + "/Vaulthub";
         public static final String getUserPublicKey = dir + "/userKeys/publicKey.key";
         public static final String getUserPrivateKey = dir + "/userKeys/privateKey.key";
         public static final String getLoginPublicKeydir = dir + "/loginKeys/publicKey.key";
         public static final String getLoginPrivateKey = dir + "/loginKeys/privateKey.key";
     }
+
 }

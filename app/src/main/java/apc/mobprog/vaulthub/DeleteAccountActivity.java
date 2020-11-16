@@ -63,7 +63,7 @@ public class DeleteAccountActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
             case R.id.ret:
-                new vaulthub.showDialog( "Action Not Performed", "Returning you now", 1, MainDisplay.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
+                startActivity(new Intent(getApplicationContext(), MainDisplay.class));
                 break;
         }
     }

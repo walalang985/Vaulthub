@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
@@ -19,8 +20,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-        new vaulthub.crypt.RSA().generateKeys();
         todo();
+        if(!doKeysExist()){
+            System.exit( 1 );
+        }
         Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.btnAbout );
         a.setOnClickListener( this );
         b.setOnClickListener( this );
@@ -37,17 +40,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 System.exit( 0 );
             }
         }
+        if(!doKeysExist()){
+            new vaulthub.showDialog( "Warning", "No generated keys yet... \n starting Vaulthub Manager now", Integer.parseInt( null ), null,null );
+            PackageManager pm = getApplicationContext().getPackageManager();
+            Intent intent = pm.getLaunchIntentForPackage( "apc.mobprog.vaulthubmanager" );
+            startActivity( intent );
+        }
+        //wait for 100 milliseconds after requesting permissons to write user keys
+
     }
     private void requestPermissions(){
         //asks the users for the permissions which enables most of the functionality of this project
         ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-        //wait for 100 milliseconds after requesting permissons to write user keys
-        new Handler().postDelayed( new Runnable() {
-            @Override
-            public void run() {
-                new vaulthub.crypt.RSA().generateKeys();
-            }
-        },100 );
+
     }
     private boolean checkPermissions(){
         //checks if the permissions are granted by the user
@@ -80,5 +85,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new vaulthub.showDialog("About Vaulthub","This vault ensures that the data stored in this application would be secured since it would undergo a very secure way of Encryption and Decryption. This vault also features a personalized login system so that only that user could access it. This vault would not be able to enter on other application because it only serves as a storage for your usernames and passwords",4, null,null).show( getSupportFragmentManager(),"" );
                 break;
         }
+        
+    }
+    public boolean doKeysExist(){
+        final String keyDir = Environment.getExternalStorageDirectory().getPath() + "/Vaulthub";
+        final String[] privatekeys = {keyDir + "/loginKeys/privateKey.key", keyDir + "/userKeys/privateKey.key"};
+        final String[] publickeys = {keyDir + "/loginKeys/publicKey.key", keyDir + "/userKeys/publicKey.key"};
+        File[] files = {new File( privatekeys[0] ),new File( privatekeys[1] ), new File( publickeys[0] ), new File( publickeys[1] )};
+        return files[0].exists() && files[1].exists() && files[2].exists() && files[3].exists();
     }
 }

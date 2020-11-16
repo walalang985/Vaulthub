@@ -52,26 +52,27 @@ public class MainDisplay extends AppCompatActivity implements View.OnClickListen
             public void onClick(View v) {
                 if(!isClicked){
                     add.show();
-                    update.show();
-                    delete.show();
-                    updateLogin.show();
                     labeladd.setVisibility( View.VISIBLE );
-                    labeldel.setVisibility( View.VISIBLE );
+                    update.show();
                     labelupd.setVisibility( View.VISIBLE );
+                    delete.show();
+                    labeldel.setVisibility( View.VISIBLE );
+                    updateLogin.show();
                     labelLogupd.setVisibility( View.VISIBLE );
                     isClicked = true;
                 }
                 else{
-                    add.hide();
-                    update.hide();
-                    delete.hide();
                     updateLogin.hide();
-                    labeladd.setVisibility( View.INVISIBLE );
-                    labelupd.setVisibility( View.INVISIBLE );
+                    labelLogupd.setVisibility( View.INVISIBLE );
+                    delete.hide();
                     labeldel.setVisibility( View.INVISIBLE );
+                    update.hide();
+                    labelupd.setVisibility( View.INVISIBLE );
+                    add.hide();
+                    labeladd.setVisibility( View.INVISIBLE );
                     isClicked = false;
-
                 }
+                System.out.println(isClicked);
             }
         } );
         add.setOnClickListener(this);
