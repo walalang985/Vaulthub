@@ -18,39 +18,10 @@ public class LoginFormActivity extends AppCompatActivity implements View.OnClick
         final vaulthub.database.userLogin db = new vaulthub.database.userLogin( getApplicationContext() );
         Button cancel = findViewById( R.id.cancelBtn ), login = findViewById( R.id.loginBtn );
         final EditText user = findViewById( R.id.txtUsername ), pass = findViewById( R.id.txtPassword );
-        final TextView userLabel = findViewById( R.id.user ), passLabel = findViewById( R.id.pass );
         if(!db.dbExists( getApplicationContext() )){
             //redirects the account if the database is not yet present in the file system
             new vaulthub.showDialog( "No Accounts","No accounts have been made yet.",1, RegisterActivity.class, getApplicationContext() ).show( getSupportFragmentManager(), "" );
         }
-        user.addTextChangedListener( new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (user.getText().toString().equals( "" )) {
-                    userLabel.setVisibility( View.VISIBLE );
-                } else {
-                    userLabel.setVisibility( View.INVISIBLE );
-                }
-            }
-        } );
-        pass.addTextChangedListener( new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (pass.getText().toString().equals( "" )) {
-                    passLabel.setVisibility( View.VISIBLE );
-                } else {
-                    passLabel.setVisibility( View.INVISIBLE );
-                }
-            }
-        } );
         cancel.setOnClickListener( this );
         login.setOnClickListener( new View.OnClickListener() {
             @Override

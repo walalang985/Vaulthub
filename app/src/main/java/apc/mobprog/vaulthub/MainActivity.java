@@ -22,16 +22,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView( R.layout.activity_main );
         todo();
         if(!doKeysExist()){
-            Toast.makeText( getApplicationContext(), "No generated keys yet... \n starting Vaulthub Manager now", Toast.LENGTH_SHORT ).show();
-            PackageManager pm = getApplicationContext().getPackageManager();
-            Intent intent = pm.getLaunchIntentForPackage( "apc.mobprog.vaulthubmanager" );
-            startActivity( intent );
+            new vaulthub.showDialog( "Notice", "Keys are not yet generated this application will not work without it \n Please open Vaulthub Manager to generate it", 4, null, null );
         }
         Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.btnAbout );
         a.setOnClickListener( this );
         b.setOnClickListener( this );
         c.setOnClickListener( this );
     }
+
     private void todo() {
         if(Ver > Build.VERSION_CODES.LOLLIPOP_MR1){
             if(!checkPermissions()){
@@ -94,8 +92,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     check if the
      */
     public boolean doKeysExist(){
-
         final String keyDir = Environment.getExternalStorageDirectory().getPath() + "/Vaulthub";
-        return new File( keyDir + "/Vaulthub").exists();
+        final String[] privatekeys = {keyDir + "/loginKeys/privateKey.key", keyDir + "/userKeys/privateKey.key"};
+        final String[] publickeys = {keyDir + "/loginKeys/publicKey.key", keyDir + "/userKeys/publicKey.key"};
+        File[] files = {new File( privatekeys[0] ),new File( privatekeys[1] ), new File( publickeys[0] ), new File( publickeys[1] )};
+        return files[0].exists() && files[1].exists() && files[2].exists() && files[3].exists();
+
     }
 }

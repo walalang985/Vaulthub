@@ -19,10 +19,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView( R.layout.activity_register );
         Button cancel = findViewById( R.id.cancelBtn ), register = findViewById( R.id.registerBtn );
         final EditText user = findViewById( R.id.txtUsername ),pass = findViewById( R.id.txtPassword );
-        final TextView userLabel = findViewById( R.id.user ), passLabel = findViewById( R.id.pass );
         final vaulthub.database.userLogin db = new vaulthub.database.userLogin(getApplicationContext());
-        userLabel.setVisibility( View.VISIBLE );
-        passLabel.setVisibility( View.VISIBLE );
         cancel.setOnClickListener(this);
         register.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -46,36 +43,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                    e.printStackTrace();
                 }
 
-            }
-        } );
-        user.addTextChangedListener( new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(user.getText().toString().equals( "" )){
-                    userLabel.setVisibility( View.VISIBLE );
-                }
-                else{
-                    userLabel.setVisibility( View.INVISIBLE );
-                }
-            }
-        } );
-        pass.addTextChangedListener( new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(pass.getText().toString().equals( "" )){
-                    passLabel.setVisibility( View.VISIBLE );
-                }
-                else{
-                    passLabel.setVisibility( View.INVISIBLE );
-                }
             }
         } );
     }

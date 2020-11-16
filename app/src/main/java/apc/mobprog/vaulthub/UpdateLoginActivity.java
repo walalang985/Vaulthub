@@ -37,17 +37,27 @@ public class UpdateLoginActivity extends AppCompatActivity {
         update.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    ObjectInputStream ois = new ObjectInputStream( new FileInputStream( vaulthub.getDirs.getLoginPrivateKey ) );
-                    PrivateKey privateKey = (PrivateKey) ois.readObject();
-                    vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA( privateKey );
-                    vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
-                    db.update( hex.getHexString( rsa.encrypt( user.getText().toString() ) ), hex.getHexString( rsa.encrypt( pass.getText().toString() ) ) );
-                    new vaulthub.showDialog( "Success", "Account updated successfully", 1, MainDisplay.class, getApplicationContext() );
-                }catch (Exception e){
-                    e.printStackTrace();//to check at which part of the program it broke
+
+                    try{
+                        if(!user.getText().toString().equals( "" )&& !pass.getText().toString().equals( "" )){
+                            ObjectInputStream ois = new ObjectInputStream( new FileInputStream( vaulthub.getDirs.getLoginPrivateKey ) );
+                            PrivateKey privateKey = (PrivateKey) ois.readObject();
+                            vaulthub.crypt.RSA rsa = new vaulthub.crypt.RSA( privateKey );
+                            vaulthub.crypt.Hex hex = new vaulthub.crypt.Hex();
+                            db.update( hex.getHexString( rsa.encrypt( user.getText().toString() ) ), hex.getHexString( rsa.encrypt( pass.getText().toString() ) ) );
+                            new vaulthub.showDialog( "Success", "Account updated successfully", 1, null, null );
+                            startActivity( new Intent( getApplicationContext(), MainDisplay.class ) );
+                        }
+                        else {
+                            new vaulthub.showDialog( "Notice", "One of the fields is empty please fill it out", 4, null,null ).show( getSupportFragmentManager(), "" );
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();//to check at which part of the program it broke
+                    }
+
                 }
-            }
+
+
         } );
         cancel.setOnClickListener( new View.OnClickListener() {
             @Override
