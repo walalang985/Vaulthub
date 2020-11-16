@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context=".UpdatePasswordActivity">
 
     <Button
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="34dp"
+        android:fontFamily="@font/montserrat_medium"
         android:text="@string/update"
         app:layout_constraintEnd_toStartOf="@+id/CANCEL"
         app:layout_constraintTop_toBottomOf="@+id/PW" />
@@ -20,6 +22,7 @@
         android:id="@+id/CANCEL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_medium"
         android:text="@string/cancel"
         app:layout_constraintBaseline_toBaselineOf="@+id/updateBTN"
         app:layout_constraintEnd_toEndOf="@+id/PW" />
@@ -33,6 +36,7 @@
         android:ems="10"
         android:importantForAutofill="yes"
         android:inputType="textPassword"
+        android:background="#ffffff"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/UN"
         tools:ignore="Autofill,TextFields" />
@@ -45,6 +49,7 @@
         android:layout_marginTop="246dp"
         android:ems="10"
         android:importantForAutofill="yes"
+        android:background="#ffffff"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="parent"
@@ -56,6 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="39dp"
         android:labelFor="@id/PW"
+        android:fontFamily="@font/roboto_mediumitalic"
+        android:textColor="#FFFFFF"
         android:text="@string/password"
         app:layout_constraintBaseline_toBaselineOf="@+id/PW"
         app:layout_constraintStart_toStartOf="parent" />
@@ -66,6 +73,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="39dp"
         android:labelFor="@id/UN"
+        android:fontFamily="@font/roboto_mediumitalic"
+        android:textColor="#FFFFFF"
         android:text="@string/username"
         app:layout_constraintBaseline_toBaselineOf="@+id/UN"
         app:layout_constraintStart_toStartOf="parent" />

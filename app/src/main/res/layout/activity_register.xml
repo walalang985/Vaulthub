@@ -3,12 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/gradient_background"
     android:layout_height="match_parent">
 
     <Button
         android:id="@+id/registerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:fontFamily="@font/montserrat_medium"
         android:text="@string/register"
         app:layout_constraintBaseline_toBaselineOf="@+id/cancelBtn"
         app:layout_constraintEnd_toEndOf="@+id/txtPassword" />
@@ -17,7 +20,8 @@
         android:id="@+id/cancelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="298dp"
+        android:layout_marginBottom="316dp"
+        android:fontFamily="@font/montserrat_medium"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/txtPassword" />
@@ -26,51 +30,66 @@
         android:id="@+id/txtUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="192dp"
+        android:layout_marginEnd="48dp"
+        android:background="#ffffff"
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/user"
+        app:layout_constraintBottom_toTopOf="@+id/txtPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.012" />
 
     <EditText
         android:id="@+id/txtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="48dp"
+        android:background="#ffffff"
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="textPassword"
-        app:layout_constraintBaseline_toBaselineOf="@+id/pass"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtUsername" />
 
     <TextView
         android:id="@+id/user"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="196dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="188dp"
+        android:layout_marginEnd="21dp"
+        android:fontFamily="@font/roboto_mediumitalic"
         android:labelFor="@id/txtUsername"
         android:text="@string/username"
         android:textAlignment="viewStart"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/txtUsername"
+        app:layout_constraintEnd_toStartOf="@+id/txtUsername"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/pass"
         android:layout_width="wrap_content"
         android:layout_height="27dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="89dp"
-        android:layout_marginBottom="86dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="100dp"
+        android:fontFamily="@font/roboto_mediumitalic"
         android:labelFor="@id/txtPassword"
         android:text="@string/password"
         android:textAlignment="viewStart"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/cancelBtn"
-        app:layout_constraintStart_toStartOf="@+id/txtPassword"
+        app:layout_constraintEnd_toStartOf="@+id/txtPassword"
+        app:layout_constraintHorizontal_bias="0.684"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtUsername"
+        app:layout_constraintVertical_bias="0.694"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
