@@ -22,7 +22,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView( R.layout.activity_main );
         todo();
         if(!doKeysExist()){
-            System.exit( 1 );
+            Toast.makeText( getApplicationContext(), "No generated keys yet... \n starting Vaulthub Manager now", Toast.LENGTH_SHORT ).show();
+            PackageManager pm = getApplicationContext().getPackageManager();
+            Intent intent = pm.getLaunchIntentForPackage( "apc.mobprog.vaulthubmanager" );
+            startActivity( intent );
         }
         Button a = findViewById( R.id.btnLogin ), b = findViewById( R.id.btnRegister ),c = findViewById( R.id.btnAbout );
         a.setOnClickListener( this );
@@ -30,23 +33,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c.setOnClickListener( this );
     }
     private void todo() {
-
         if(Ver > Build.VERSION_CODES.LOLLIPOP_MR1){
             if(!checkPermissions()){
                 requestPermissions();
             }
             else{
-                new vaulthub.showDialog( "IMPORTANT","Please grant the permissions first", Integer.parseInt( null ),null,null  ).show( getSupportFragmentManager(), "" );
-                System.exit( 0 );
+                new vaulthub.showDialog( "NOTICE", "Permissions must be granted first", 1, null, null ).show( getSupportFragmentManager(), "" );
+                /*
+                kills the program by throwing a new Security Exception
+                 */
+                new Handler().postDelayed( new Runnable() {
+                    @Override
+                    public void run() {
+                        throw new SecurityException("Please grant the permissions first");
+                    }
+                } ,2000);
             }
         }
-        if(!doKeysExist()){
-            new vaulthub.showDialog( "Warning", "No generated keys yet... \n starting Vaulthub Manager now", Integer.parseInt( null ), null,null );
-            PackageManager pm = getApplicationContext().getPackageManager();
-            Intent intent = pm.getLaunchIntentForPackage( "apc.mobprog.vaulthubmanager" );
-            startActivity( intent );
-        }
-        //wait for 100 milliseconds after requesting permissons to write user keys
 
     }
     private void requestPermissions(){
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
     }
-
+    //
     @Override
     public void onBackPressed() {
         new vaulthub.showDialog( "Do you want to exit", "Click Yes to exit or No to stay in the application",3, null,null ).show( getSupportFragmentManager(),"" );
@@ -87,11 +90,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         
     }
+    /*
+    check if the
+     */
     public boolean doKeysExist(){
+
         final String keyDir = Environment.getExternalStorageDirectory().getPath() + "/Vaulthub";
-        final String[] privatekeys = {keyDir + "/loginKeys/privateKey.key", keyDir + "/userKeys/privateKey.key"};
-        final String[] publickeys = {keyDir + "/loginKeys/publicKey.key", keyDir + "/userKeys/publicKey.key"};
-        File[] files = {new File( privatekeys[0] ),new File( privatekeys[1] ), new File( publickeys[0] ), new File( publickeys[1] )};
-        return files[0].exists() && files[1].exists() && files[2].exists() && files[3].exists();
+        return new File( keyDir + "/Vaulthub").exists();
     }
 }
